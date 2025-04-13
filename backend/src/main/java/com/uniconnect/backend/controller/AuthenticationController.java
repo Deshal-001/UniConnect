@@ -17,7 +17,11 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
-    // Authenticates user and returns token
+    /**
+     * Authenticates a user and returns a JWT token.
+     * @param authRequest the login credentials (email and password)
+     * @return authentication token
+     */
     @PostMapping("/login")
     public AuthenticationResponse login(@Valid @RequestBody AuthenticationRequest authRequest) {
         String token = authenticationService.login(authRequest.getEmail(), authRequest.getPassword());
@@ -26,7 +30,11 @@ public class AuthenticationController {
                 .build();
     }
 
-    // Registers new user and returns token
+    /**
+     * Registers a new user and returns a JWT token.
+     * @param request the registration details
+     * @return authentication token
+     */
     @PostMapping("/register")
     public AuthenticationResponse register(@Valid @RequestBody RegisterRequest request) {
         String token = authenticationService.register(
@@ -39,7 +47,11 @@ public class AuthenticationController {
         return AuthenticationResponse.builder().token(token).build();
     }
 
-    // Registers new admin user and returns token
+    /**
+     * Registers a new admin user and returns a JWT token.
+     * @param request the admin registration details
+     * @return authentication token
+     */
     @PostMapping("/registerAdmin")
     public AuthenticationResponse registerAdmin(@Valid @RequestBody RegisterRequest request) {
         String token = authenticationService.registerAdmin(
@@ -52,8 +64,12 @@ public class AuthenticationController {
         return AuthenticationResponse.builder().token(token).build();
     }
 
-
-    // Deletes user by email (admin only)
+    /**
+     * Deletes a user by email.
+     * Access restricted to users with ADMIN role.
+     * @param deleteRequest contains the email of the user to be deleted
+     * @return success message
+     */
     @DeleteMapping("/admin/user")
     @PreAuthorize("hasRole('ADMIN')")
     public DeleteResponse deleteUser(@Valid @RequestBody DeleteRequest deleteRequest) {
@@ -63,7 +79,10 @@ public class AuthenticationController {
                 .build();
     }
 
-    // Deletes authenticated user's own account
+    /**
+     * Deletes the authenticated user's own account.
+     * @return success message
+     */
     @DeleteMapping("/user")
     public DeleteResponse deleteUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -73,7 +92,10 @@ public class AuthenticationController {
                 .build();
     }
 
-    // Returns list of all users
+    /**
+     * Retrieves a list of all registered users.
+     * @return list of users
+     */
     @GetMapping("/users")
     public UsersListResponse getAllUsers() {
         var users = authenticationService.getAllUsers();
