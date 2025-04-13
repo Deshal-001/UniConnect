@@ -8,6 +8,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class AuthenticationService {
     }
 
     // Registers new user with default USER role and generates JWT token
-    public String register(String email, String password) {
+    public String register(String email, String password, String fullName, String location, LocalDateTime birthday) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
         }
@@ -53,6 +54,9 @@ public class AuthenticationService {
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .fullName(fullName)
+                .location(location)
+                .birthday(birthday)
                 .role(Role.USER) // Default role
                 .build();
 
@@ -65,15 +69,21 @@ public class AuthenticationService {
         return jwtService.generateToken(email, authorities);
     }
 
+
     // Registers new admin user and generates JWT token
-    public String registerAdmin(String email, String password) {
+    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
         }
 
-        var user = User.builder().email(email)
+        var user = User.builder()
+                .email(email)
                 .password(passwordEncoder.encode(password))
-                .role(Role.ADMIN).build();
+                .fullName(fullName)
+                .location(location)
+                .birthday(birthday)
+                .role(Role.USER) // Default role
+                .build();
 
         userRepository.save(user);
 

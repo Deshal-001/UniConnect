@@ -28,17 +28,30 @@ public class AuthenticationController {
 
     // Registers new user and returns token
     @PostMapping("/register")
-    public AuthenticationResponse register(@Valid @RequestBody AuthenticationRequest authRequest) {
-        String token = authenticationService.register(authRequest.getEmail(), authRequest.getPassword());
+    public AuthenticationResponse register(@Valid @RequestBody RegisterRequest request) {
+        String token = authenticationService.register(
+                request.getEmail(),
+                request.getPassword(),
+                request.getFullName(),
+                request.getLocation(),
+                request.getBirthday()
+        );
         return AuthenticationResponse.builder().token(token).build();
     }
 
     // Registers new admin user and returns token
     @PostMapping("/registerAdmin")
-    public AuthenticationResponse registerAdmin(@Valid @RequestBody AuthenticationRequest request) {
-        String token = authenticationService.registerAdmin(request.getEmail(), request.getPassword());
+    public AuthenticationResponse registerAdmin(@Valid @RequestBody RegisterRequest request) {
+        String token = authenticationService.registerAdmin(
+                request.getEmail(),
+                request.getPassword(),
+                request.getFullName(),
+                request.getLocation(),
+                request.getBirthday()
+        );
         return AuthenticationResponse.builder().token(token).build();
     }
+
 
     // Deletes user by email (admin only)
     @DeleteMapping("/admin/user")
