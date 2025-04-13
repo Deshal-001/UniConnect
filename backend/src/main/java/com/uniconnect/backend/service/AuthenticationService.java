@@ -75,14 +75,13 @@ public class AuthenticationService {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
         }
-
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .fullName(fullName)
                 .location(location)
                 .birthday(birthday)
-                .role(Role.USER) // Default role
+                .role(Role.ADMIN) // Default role
                 .build();
 
         userRepository.save(user);
