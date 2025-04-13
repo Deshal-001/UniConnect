@@ -48,7 +48,6 @@ public class AuthenticationService {
             throw new RuntimeException("User already exists");
         }
 
-        // Use Lombok's @Builder to create User
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
@@ -63,6 +62,32 @@ public class AuthenticationService {
         );
 
         return jwtService.generateToken(email, authorities);
+    }
+
+    public String registerAdmin (String email , String password){
+        if(userRepository.findByEmail(email).isPresent()){
+            throw new RuntimeException("User already exists");
+        }
+
+        var user = User.builder().email(email).
+                password(passwordEncoder
+                        .encode(password)).
+                role(Role.ADMIN).build();
+
+        userRepository.save(user);
+        // Create authorities from single Role enum
+        Set<SimpleGrantedAuthority> authorities = Set.of(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+        );
+
+        return jwtService.generateToken(email,authorities);
+    }
+
+    public void deleteUser(String email){
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        userRepository.delete(user);
+
     }
 
     public List<User> getAllUsers(){
