@@ -38,8 +38,7 @@ public class EventService {
                 .build();
         event = eventRepository.save(event);
         eventDto.setId(event.getId());
-        eventDto.setCreatorId(eventDto.getCreatorId());
-
+        eventDto.setCreatorId(creator.getId());
         return eventDto;
 
     }
