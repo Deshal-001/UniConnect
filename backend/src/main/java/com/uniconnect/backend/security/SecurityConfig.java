@@ -24,6 +24,7 @@ public class SecurityConfig {
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
     }
 
+    // Configures security filter chain for HTTP requests
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -32,7 +33,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll() // Allow login/register
                         .requestMatchers("/api/admin/**").hasRole("ADMIN")
-                        .requestMatchers("/api/user").authenticated()// Admin-only endpoints
+                        .requestMatchers("/api/user").authenticated() // Admin-only endpoints
                         .anyRequest().authenticated() // Everything else requires auth
                 )
                 .sessionManagement(session -> session
@@ -44,10 +45,11 @@ public class SecurityConfig {
         return http.build();
     }
 
+    // Configures CORS settings for cross-origin requests
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Adjust for your frontend
+        configuration.setAllowedOrigins(List.of("http://localhost:3000")); // Adjust for frontend
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

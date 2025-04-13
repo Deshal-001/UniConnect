@@ -17,26 +17,30 @@ public class AuthenticationController {
         this.authenticationService = authenticationService;
     }
 
+    // Authenticates user and returns token
     @PostMapping("/login")
     public AuthenticationResponse login(@Valid @RequestBody AuthenticationRequest authRequest) {
         String token = authenticationService.login(authRequest.getEmail(), authRequest.getPassword());
-        return  AuthenticationResponse.builder()
+        return AuthenticationResponse.builder()
                 .token(token)
                 .build();
     }
 
+    // Registers new user and returns token
     @PostMapping("/register")
     public AuthenticationResponse register(@Valid @RequestBody AuthenticationRequest authRequest) {
         String token = authenticationService.register(authRequest.getEmail(), authRequest.getPassword());
         return AuthenticationResponse.builder().token(token).build();
     }
 
+    // Registers new admin user and returns token
     @PostMapping("/registerAdmin")
-    public AuthenticationResponse registerAdmin(@Valid @RequestBody AuthenticationRequest request){
-        String token = authenticationService.registerAdmin(request.getEmail(),request.getPassword());
+    public AuthenticationResponse registerAdmin(@Valid @RequestBody AuthenticationRequest request) {
+        String token = authenticationService.registerAdmin(request.getEmail(), request.getPassword());
         return AuthenticationResponse.builder().token(token).build();
     }
 
+    // Deletes user by email (admin only)
     @DeleteMapping("/admin/user")
     @PreAuthorize("hasRole('ADMIN')")
     public DeleteResponse deleteUser(@Valid @RequestBody DeleteRequest deleteRequest) {
@@ -46,6 +50,7 @@ public class AuthenticationController {
                 .build();
     }
 
+    // Deletes authenticated user's own account
     @DeleteMapping("/user")
     public DeleteResponse deleteUser() {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -55,8 +60,9 @@ public class AuthenticationController {
                 .build();
     }
 
+    // Returns list of all users
     @GetMapping("/users")
-    public UsersListResponse getAllUsers(){
+    public UsersListResponse getAllUsers() {
         var users = authenticationService.getAllUsers();
         return UsersListResponse.builder().userList(users).build();
     }
