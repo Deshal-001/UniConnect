@@ -1,5 +1,7 @@
 package com.uniconnect.backend.service;
 
+import com.uniconnect.backend.exception.ApiException;
+import com.uniconnect.backend.exception.ErrorCodes;
 import com.uniconnect.backend.model.Role;
 import com.uniconnect.backend.model.University;
 import com.uniconnect.backend.model.User;
@@ -12,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Service
 public class AuthenticationService {
@@ -38,9 +38,10 @@ public class AuthenticationService {
 
     // Authenticates user and generates JWT token
     public String login(String email, String password) {
-        var user = userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User not found"));
+        var user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ApiException(ErrorCodes.USER_NOT_FOUND));
         if (!passwordEncoder.matches(password, user.getPassword())) {
-            throw new RuntimeException("Invalid password");
+            throw new ApiException(ErrorCodes.INVALID_PASSWORD);
         }
 
         Set<SimpleGrantedAuthority> authorities = Set.of(
@@ -53,53 +54,20 @@ public class AuthenticationService {
     // Registers new user with default USER role and generates JWT token
     public String register(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
         if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("User already exists");
+            throw new ApiException(ErrorCodes.USER_ALREADY_EXISTS);
         }
 
-        if(universityRepository.findById(uniId).isEmpty()){
-            throw new RuntimeException("University does not exist");
+        University university = universityRepository.findById(uniId)
+                .orElseThrow(() -> new ApiException(ErrorCodes.UNIVERSITY_NOT_FOUND));
 
-        }
-            University university = universityRepository.findById(uniId).get();
-            var user = User.builder()
-                    .email(email)
-                    .password(passwordEncoder.encode(password))
-                    .fullName(fullName)
-                    .location(location)
-                    .birthday(birthday)
-                    .role(Role.USER)
-                    .university(new University(university.getId(), university.getName(), university.getLocation()))// Default role
-                    .build();
-            userRepository.save(user);
-
-            Set<SimpleGrantedAuthority> authorities = Set.of(
-                    new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
-            );
-
-            return jwtService.generateToken(email, authorities);
-
-
-    }
-
-    // Registers new admin user and generates JWT token
-    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("User already exists");
-        }
-
-        if(universityRepository.findById(uniId).isEmpty()){
-            throw new RuntimeException("University does not exist");
-
-        }
-        University university = universityRepository.findById(uniId).get();
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .fullName(fullName)
                 .location(location)
                 .birthday(birthday)
-                .role(Role.ADMIN)
-                .university(new University(university.getId(), university.getName(), university.getLocation()))// Default role
+                .role(Role.USER)
+                .university(new University(university.getId(), university.getName(), university.getLocation()))
                 .build();
         userRepository.save(user);
 
@@ -108,13 +76,39 @@ public class AuthenticationService {
         );
 
         return jwtService.generateToken(email, authorities);
+    }
 
+    // Registers new admin user and generates JWT token
+    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new ApiException(ErrorCodes.USER_ALREADY_EXISTS);
+        }
+
+        University university = universityRepository.findById(uniId)
+                .orElseThrow(() -> new ApiException(ErrorCodes.UNIVERSITY_NOT_FOUND));
+
+        var user = User.builder()
+                .email(email)
+                .password(passwordEncoder.encode(password))
+                .fullName(fullName)
+                .location(location)
+                .birthday(birthday)
+                .role(Role.ADMIN)
+                .university(new University(university.getId(), university.getName(), university.getLocation()))
+                .build();
+        userRepository.save(user);
+
+        Set<SimpleGrantedAuthority> authorities = Set.of(
+                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+        );
+
+        return jwtService.generateToken(email, authorities);
     }
 
     // Deletes user by email
     public void deleteUser(String email) {
         var user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.USER_NOT_FOUND));
         userRepository.delete(user);
     }
 

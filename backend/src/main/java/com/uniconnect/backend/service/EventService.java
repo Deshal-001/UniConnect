@@ -2,6 +2,8 @@ package com.uniconnect.backend.service;
 
 import com.uniconnect.backend.dto.EventDto;
 import com.uniconnect.backend.dto.UserDto;
+import com.uniconnect.backend.exception.ApiException;
+import com.uniconnect.backend.exception.ErrorCodes;
 import com.uniconnect.backend.model.Booking;
 import com.uniconnect.backend.model.Event;
 import com.uniconnect.backend.model.University;
@@ -36,19 +38,19 @@ public class EventService {
     @Transactional
     public EventDto createEvent(EventDto eventDto) {
         if (eventDto.getDate().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Event date cannot be in the past");
+            throw new ApiException(ErrorCodes.EVENT_PAST_DATE);
         }
         if (eventDto.getMaxParticipants() < 1) {
-            throw new RuntimeException("Max participants must be at least 1");
+            throw new ApiException(ErrorCodes.INVALID_MAX_PARTICIPANTS);
         }
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User creator = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.USER_NOT_FOUND));
 
         University university = null;
         if (eventDto.getUniversityId() != null) {
             university = universityRepository.findById(eventDto.getUniversityId())
-                    .orElseThrow(() -> new RuntimeException("University not found"));
+                    .orElseThrow(() -> new ApiException(ErrorCodes.UNIVERSITY_NOT_FOUND));
         }
 
         Event event = Event.builder()
@@ -69,26 +71,26 @@ public class EventService {
     public EventDto bookEvent(Long eventId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.USER_NOT_FOUND));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.EVENT_NOT_FOUND));
 
         // Check university restriction
         if (event.isRestrictToUniversity() && event.getUniversity() != null) {
             if (user.getUniversity() == null || !user.getUniversity().getId().equals(event.getUniversity().getId())) {
-                throw new RuntimeException("Only members of the organizing university can book this event");
+                throw new ApiException(ErrorCodes.UNIVERSITY_RESTRICTION);
             }
         }
 
         // Check if already booked
         if (bookingRepository.existsByEventIdAndUserId(eventId, user.getId())) {
-            throw new RuntimeException("You have already booked this event");
+            throw new ApiException(ErrorCodes.ALREADY_BOOKED);
         }
 
         // Check max participants
         long currentBookings = bookingRepository.countByEventId(eventId);
         if (currentBookings >= event.getMaxParticipants()) {
-            throw new RuntimeException("Event is fully booked");
+            throw new ApiException(ErrorCodes.EVENT_FULL);
         }
 
         // Create booking
@@ -106,12 +108,12 @@ public class EventService {
     public EventDto cancelBooking(Long eventId) {
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.USER_NOT_FOUND));
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.EVENT_NOT_FOUND));
 
         Booking booking = bookingRepository.findByEventIdAndUserId(eventId, user.getId())
-                .orElseThrow(() -> new RuntimeException("You are not booked for this event"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.NOT_BOOKED));
 
         bookingRepository.delete(booking);
 
@@ -127,7 +129,7 @@ public class EventService {
 
     public EventDto getEvent(Long id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.EVENT_NOT_FOUND));
         return mapToDto(event);
     }
 
@@ -140,13 +142,18 @@ public class EventService {
 
     public void deleteEvent(Long id) {
         Event event = eventRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.EVENT_NOT_FOUND));
+        long bookingCount = bookingRepository.countByEventId(id);
+        if (bookingCount > 0) {
+            throw new ApiException(ErrorCodes.EVENT_HAS_BOOKINGS);
+        }
         bookingRepository.deleteAll(bookingRepository.findByEventId(id));
+        eventRepository.delete(event);
     }
 
     public List<UserDto> getEventAttendees(Long eventId) {
         Event event = eventRepository.findById(eventId)
-                .orElseThrow(() -> new RuntimeException("Event not found"));
+                .orElseThrow(() -> new ApiException(ErrorCodes.EVENT_NOT_FOUND));
         return bookingRepository.findByEventId(eventId)
                 .stream()
                 .map(booking -> {
