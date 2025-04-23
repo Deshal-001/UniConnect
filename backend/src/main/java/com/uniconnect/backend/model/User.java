@@ -35,6 +35,10 @@ private Long id;
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @ManyToOne
+    @JoinColumn(name = "university_id")
+    private University university;
+
 
 
 }

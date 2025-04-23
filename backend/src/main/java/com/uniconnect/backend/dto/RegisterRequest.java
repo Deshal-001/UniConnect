@@ -1,5 +1,6 @@
 package com.uniconnect.backend.dto;
 
+import com.uniconnect.backend.model.University;
 import lombok.Builder;
 import lombok.Data;
 
@@ -13,4 +14,5 @@ public class RegisterRequest {
     private String fullName;
     private String location;
     private LocalDateTime birthday;
+    private String uniId;
 }

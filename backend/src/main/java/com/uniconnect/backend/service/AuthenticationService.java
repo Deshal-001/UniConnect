@@ -1,7 +1,9 @@
 package com.uniconnect.backend.service;
 
 import com.uniconnect.backend.model.Role;
+import com.uniconnect.backend.model.University;
 import com.uniconnect.backend.model.User;
+import com.uniconnect.backend.repository.UniversityRepository;
 import com.uniconnect.backend.repository.UserRepository;
 import com.uniconnect.backend.security.JwtService;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,15 +22,18 @@ public class AuthenticationService {
     private final JwtService jwtService;
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UniversityRepository universityRepository;
 
     public AuthenticationService(
             JwtService jwtService,
             UserRepository userRepository,
+            UniversityRepository universityRepository,
             PasswordEncoder passwordEncoder
     ) {
         this.jwtService = jwtService;
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.universityRepository = universityRepository;
     }
 
     // Authenticates user and generates JWT token
@@ -46,44 +51,56 @@ public class AuthenticationService {
     }
 
     // Registers new user with default USER role and generates JWT token
-    public String register(String email, String password, String fullName, String location, LocalDateTime birthday) {
+    public String register(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
         }
 
-        var user = User.builder()
-                .email(email)
-                .password(passwordEncoder.encode(password))
-                .fullName(fullName)
-                .location(location)
-                .birthday(birthday)
-                .role(Role.USER) // Default role
-                .build();
+        if(universityRepository.findById(uniId).isEmpty()){
+            throw new RuntimeException("University does not exist");
 
-        userRepository.save(user);
+        }
+            University university = universityRepository.findById(uniId).get();
+            var user = User.builder()
+                    .email(email)
+                    .password(passwordEncoder.encode(password))
+                    .fullName(fullName)
+                    .location(location)
+                    .birthday(birthday)
+                    .role(Role.USER)
+                    .university(new University(university.getId(), university.getName(), university.getLocation()))// Default role
+                    .build();
+            userRepository.save(user);
 
-        Set<SimpleGrantedAuthority> authorities = Set.of(
-                new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
-        );
+            Set<SimpleGrantedAuthority> authorities = Set.of(
+                    new SimpleGrantedAuthority("ROLE_" + user.getRole().name())
+            );
 
-        return jwtService.generateToken(email, authorities);
+            return jwtService.generateToken(email, authorities);
+
+
     }
 
-
     // Registers new admin user and generates JWT token
-    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday) {
+    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new RuntimeException("User already exists");
         }
+
+        if(universityRepository.findById(uniId).isEmpty()){
+            throw new RuntimeException("University does not exist");
+
+        }
+        University university = universityRepository.findById(uniId).get();
         var user = User.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
                 .fullName(fullName)
                 .location(location)
                 .birthday(birthday)
-                .role(Role.ADMIN) // Default role
+                .role(Role.ADMIN)
+                .university(new University(university.getId(), university.getName(), university.getLocation()))// Default role
                 .build();
-
         userRepository.save(user);
 
         Set<SimpleGrantedAuthority> authorities = Set.of(
@@ -91,6 +108,7 @@ public class AuthenticationService {
         );
 
         return jwtService.generateToken(email, authorities);
+
     }
 
     // Deletes user by email

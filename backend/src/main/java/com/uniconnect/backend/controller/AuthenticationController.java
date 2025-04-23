@@ -42,7 +42,8 @@ public class AuthenticationController {
                 request.getPassword(),
                 request.getFullName(),
                 request.getLocation(),
-                request.getBirthday()
+                request.getBirthday(),
+                Long.valueOf(request.getUniId())
         );
         return AuthenticationResponse.builder().token(token).build();
     }
@@ -59,7 +60,8 @@ public class AuthenticationController {
                 request.getPassword(),
                 request.getFullName(),
                 request.getLocation(),
-                request.getBirthday()
+                request.getBirthday(),
+                Long.valueOf(request.getUniId())
         );
         return AuthenticationResponse.builder().token(token).build();
     }
@@ -101,4 +103,6 @@ public class AuthenticationController {
         var users = authenticationService.getAllUsers();
         return UsersListResponse.builder().userList(users).build();
     }
+
+
 }
