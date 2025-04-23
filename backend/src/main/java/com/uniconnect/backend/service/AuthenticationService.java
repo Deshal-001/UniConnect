@@ -88,7 +88,7 @@ public class AuthenticationService {
         }
 
         if(universityRepository.findById(uniId).isEmpty()){
-            throw new RuntimeException("University is not exist");
+            throw new RuntimeException("University does not exist");
 
         }
         University university = universityRepository.findById(uniId).get();
