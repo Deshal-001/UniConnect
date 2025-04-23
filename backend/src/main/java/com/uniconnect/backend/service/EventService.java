@@ -141,10 +141,7 @@ public class EventService {
     public void deleteEvent(Long id) {
         Event event = eventRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
-        bookingRepository.deleteAll(bookingRepository.findAll().stream()
-                .filter(booking -> booking.getEvent().getId().equals(id))
-                .collect(Collectors.toList()));
-        eventRepository.delete(event);
+        bookingRepository.deleteAll(bookingRepository.findByEventId(id));
     }
 
     public List<UserDto> getEventAttendees(Long eventId) {
