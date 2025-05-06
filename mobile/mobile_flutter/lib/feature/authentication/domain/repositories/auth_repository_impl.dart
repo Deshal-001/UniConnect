@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import '../../../../core/constants/token_constants.dart';
 import '../../../../core/exception/api_exeption.dart';
 import '../../../../core/network/token_controller.dart';
-import '../../data/data_sources/auth_api_service.dart';
+import '../../data/data_sources/auth_remote_datasource.dart';
 import '../../data/repositories/auth_repository.dart';
 
 class AuthRepoImplementation implements AuthenticationRepository {
