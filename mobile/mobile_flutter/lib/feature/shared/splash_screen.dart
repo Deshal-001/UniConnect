@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 20));
+    await Future.delayed(const Duration(seconds: 3));
     // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/login');
   }

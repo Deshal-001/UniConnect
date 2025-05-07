@@ -23,7 +23,7 @@ final class UserAuthenticatingError extends AuthenticationState {
   const UserAuthenticatingError(this.message, this.statusCode);
 
   final String message;
-  final int statusCode;
+  final String statusCode;
 
   @override
   List<Object> get props => [message, statusCode];

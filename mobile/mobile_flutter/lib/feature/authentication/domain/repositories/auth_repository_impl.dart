@@ -1,5 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 
 import '../../../../core/constants/token_constants.dart';
 import '../../../../core/exception/api_exeption.dart';
@@ -11,11 +12,12 @@ class AuthRepoImplementation implements AuthenticationRepository {
   final AuthApiRemoteDataSource api;
 
   AuthRepoImplementation(
-     this.api,
+    this.api,
   );
 
   @override
   Future<Either<Failure, String>> login(String email, String password) async {
+    Logger().i('Login attempt with email: $email and password: $password');
     try {
       final params = {
         'email': email,
@@ -23,7 +25,7 @@ class AuthRepoImplementation implements AuthenticationRepository {
       };
       final response = await api.login(params);
       if (response.token.isEmpty) {
-        throw ApiException('401', 'Invalid credentials');
+        throw const ApiException(statusCode: '401',message:  'Invalid credentials');
       }
       // Store the JWT token securely
       TokenController.storeTokens({
@@ -31,14 +33,14 @@ class AuthRepoImplementation implements AuthenticationRepository {
       });
       return Right(response.token);
     } on DioException catch (e) {
-      final errorData = e.response?.data;
-      final errorMessage = errorData?['message'] ?? 'Unknown error occurred';
-      final errorCode =
-          errorData?['errorCode'] ?? e.response?.statusCode ?? '500';
-
-      throw ApiException(errorCode, errorMessage);
+     
+      return Left(
+        ApiException
+        .fromDioException(e)
+      );
     } catch (e) {
-      throw ApiException('500', 'Unexpected error: ${e.toString()}');
+      return 
+      Left(ApiException(message: '500', statusCode: 'Unexpected error: ${e.toString()}'));
     }
   }
 
