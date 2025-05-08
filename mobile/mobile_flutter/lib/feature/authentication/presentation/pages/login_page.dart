@@ -28,15 +28,22 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    final screenHeight = MediaQuery.of(context).size.height;
+    final screenWidth = MediaQuery.of(context).size.width;
+
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
-            leading: SvgPicture.asset(
-          'assets/icons/arrow-left.svg',
-          height: 12,
-          width: 12,
-          fit: BoxFit.scaleDown,
-        )),
+          leading: GestureDetector(
+            onTap: () => Navigator.pop(context),
+            child: SvgPicture.asset(
+              'assets/icons/arrow-left.svg',
+              height: 12,
+              width: 12,
+              fit: BoxFit.scaleDown,
+            ),
+          ),
+        ),
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             if (state is UserAuthenticated) {
@@ -72,44 +79,59 @@ class _LoginPageState extends State<LoginPage> {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
-                  'Welcome Back !',
-                  style: TextStyle(
-                      fontFamily: 'Inter',
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-                Column(
-                  children: [
-                    CustomTextField(
-                      controller: emailController,
-                      label: 'Email address',
-                      hintText: 'name@example.com',
-                      keyboardType: TextInputType.emailAddress,
+                // Scrollable content
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        const Text(
+                          'Welcome Back!',
+                          style: TextStyle(
+                            fontFamily: 'Inter',
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                         SizedBox(height: screenHeight * 0.15),
+                        Column(
+                          children: [
+                            CustomTextField(
+                              controller: emailController,
+                              label: 'Email address',
+                              hintText: 'name@example.com',
+                              keyboardType: TextInputType.emailAddress,
+                            ),
+                            const SizedBox(height: 35),
+                        CustomTextField(
+                          controller: passwordController,
+                          label: 'Password',
+                          hintText: 'Enter your password',
+                          isPassword: true,
+                        ),
+                          ],
+                        ),
+                        
+                      ],
                     ),
-                    const SizedBox(height: 35),
-                    CustomTextField(
-                      controller: passwordController,
-                      label: 'Password',
-                      hintText: 'Enter your password',
-                      isPassword: true,
-                    ),
-                  ],
+                  ),
                 ),
-                const SizedBox(height: 24),
+                // Button at the bottom
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
                     return CustomButton(
-                      onPressed:
-                          state is AuthenticatingUser ? null : _handleLogin,
+                      onPressed: state is AuthenticatingUser
+                          ? null
+                          : _handleLogin,
                       isLoading: state is AuthenticatingUser,
                       text: 'Sign in',
                     );
                   },
                 ),
+                              const SizedBox(height: 40),
+
               ],
             ),
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:uniconnect_app/core/constants/solid_colors.dart';
 
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
@@ -79,6 +80,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
                       'assets/icons/eye.svg',
                       height: 15,
                       width: 15,
+                      // ignore: deprecated_member_use
+                      color: obscureText ? Colors.grey : const Color(AppSolidColors.primary),
                       fit: BoxFit.scaleDown,
                     ),
                 )
