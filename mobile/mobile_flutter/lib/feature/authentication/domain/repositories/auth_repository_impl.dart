@@ -1,6 +1,5 @@
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
-import 'package:logger/logger.dart';
 
 import '../../../../core/constants/token_constants.dart';
 import '../../../../core/exception/api_exeption.dart';
