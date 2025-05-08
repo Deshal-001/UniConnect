@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:uniconnect_app/core/constants/solid_colors.dart';
 
-class CustomTextField extends StatelessWidget {
+class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String label;
   final String hintText;
@@ -17,24 +19,37 @@ class CustomTextField extends StatelessWidget {
   });
 
   @override
+  State<CustomTextField> createState() => _CustomTextFieldState();
+}
+
+class _CustomTextFieldState extends State<CustomTextField> {
+  late bool obscureText = true;
+
+  @override
+  void initState() {
+    super.initState();
+    obscureText = widget.isPassword;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(label,
+        Text(widget.label,
             style: TextStyle(
               fontFamily: 'Inter',
               fontSize: 16,
               fontWeight: FontWeight.bold,
               color: Colors.grey.shade600,
             )),
-        TextField(
-          controller: controller,
+        TextFormField(
+          controller: widget.controller,
           cursorHeight: 20,
           cursorColor: Colors.grey,
-          obscureText: isPassword,
+          obscureText: obscureText,
           obscuringCharacter: '*',
-          keyboardType: keyboardType,
+          keyboardType: widget.keyboardType,
           decoration: InputDecoration(
             enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey, width: 0.5),
@@ -48,12 +63,37 @@ class CustomTextField extends StatelessWidget {
               fontSize: 14,
               color: Colors.red,
             ),
-            hintText: hintText,
+            hintText: widget.hintText,
             hintStyle: const TextStyle(
               fontFamily: 'Inter',
               fontSize: 14,
               color: Colors.grey,
             ),
+            suffixIcon: widget.isPassword
+                ? GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        obscureText = !obscureText;
+                      });
+                    },
+                  child: SvgPicture.asset(
+                      'assets/icons/eye.svg',
+                      height: 15,
+                      width: 15,
+                      // ignore: deprecated_member_use
+                      color: obscureText ? Colors.grey : const Color(AppSolidColors.primary),
+                      fit: BoxFit.scaleDown,
+                    ),
+                )
+                // IconButton(
+                //     icon: const Icon(Icons.visibility_off),
+                //     onPressed: () {
+                //       setState(() {
+                //         obscureText = !obscureText;
+                //       });
+                //     },
+                //   )
+                : null,
           ),
         ),
       ],

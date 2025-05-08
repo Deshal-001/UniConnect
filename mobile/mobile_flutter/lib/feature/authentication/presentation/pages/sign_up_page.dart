@@ -7,14 +7,14 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/widget/custom_button.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<SignUpPage> createState() => _SignUpPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class _SignUpPageState extends State<SignUpPage> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
@@ -25,13 +25,6 @@ class _LoginPageState extends State<LoginPage> {
     context
         .read<AuthenticationBloc>()
         .add(LoginUserEvent(email: email, password: password));
-  }
-
-  @override
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
   }
 
   @override

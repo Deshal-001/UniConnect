@@ -1,0 +1,47 @@
+{
+  "welcomeTitle": "Welcome!",
+  "@welcomeTitle": {
+    "description": "The welcome title at the top of the welcome screen"
+  },
+
+  "welcomeSubtitle": "Sign in or create a new account",
+  "@welcomeSubtitle": {
+    "description": "The subtitle below the welcome title"
+  },
+
+  "signIn": "Sign in",
+  "@signIn": {
+    "description": "Text for the sign-in button"
+  },
+
+  "noAccount": "No account yet?",
+  "@noAccount": {
+    "description": "Prompt text for users who don't have an account"
+  },
+
+  "signUp": "Sign up",
+  "@signUp": {
+    "description": "Sign-up call to action"
+  },
+
+  "english": "English",
+  "@english": {
+    "description": "Language name for English"
+  },
+
+  "german": "Deutsch",
+  "@german": {
+    "description": "Language name for German"
+  },
+  "welcomeBack": "Welcome Back!",
+  "emailLabel": "Email address",
+  "emailHint": "name@example.com",
+  "passwordLabel": "Password",
+  "passwordHint": "Enter your password",
+  "signInButton": "Sign in",
+  "loginSuccessTitle": "Success",
+  "loginSuccessMessage": "Login Successful",
+  "loginFailedTitle": "Login Failed",
+  "loginFailedMessage": "Error {statusCode}: {message}",
+  "okButton": "OK"
+}

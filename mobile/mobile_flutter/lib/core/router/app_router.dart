@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:uniconnect_app/feature/authentication/presentation/pages/welcome_page.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/pages/login_page.dart';
 import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
+import '../../feature/authentication/presentation/pages/sign_up_page.dart';
+
 class AppRouter {
   static const String splash = '/';
+  static const String home = '/home';
   static const String login = '/login';
   static const String register = '/register';
   static const String profile = '/profile';
@@ -14,8 +18,9 @@ class AppRouter {
 
   static Map<String, WidgetBuilder> routes = {
     splash: (context) => const SplashScreen(),
+    home: (context) => const WelcomePage(),
     login: (context) => const LoginPage(),
-    // register: (context) => const RegisterPage(),
+    register: (context) => const SignUpPage(),
     // profile: (context) => const ProfilePage(),
     // settings: (context) => const SettingsPage(),
     // about: (context) => const AboutPage(),
