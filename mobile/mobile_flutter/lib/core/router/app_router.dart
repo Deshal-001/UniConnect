@@ -3,6 +3,8 @@ import 'package:uniconnect_app/feature/authentication/presentation/pages/welcome
 import 'package:uniconnect_app/feature/authentication/presentation/pages/login_page.dart';
 import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
+import '../../feature/authentication/presentation/pages/sign_up_page.dart';
+
 class AppRouter {
   static const String splash = '/';
   static const String home = '/home';
@@ -18,7 +20,7 @@ class AppRouter {
     splash: (context) => const SplashScreen(),
     home: (context) => const WelcomePage(),
     login: (context) => const LoginPage(),
-    // register: (context) => const RegisterPage(),
+    register: (context) => const SignUpPage(),
     // profile: (context) => const ProfilePage(),
     // settings: (context) => const SettingsPage(),
     // about: (context) => const AboutPage(),

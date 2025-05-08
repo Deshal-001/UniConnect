@@ -1,30 +1,30 @@
 {
-  "welcomeTitle": "Welcome!",
+  "welcomeTitle": "Willkommen!",
   "@welcomeTitle": {
     "description": "The welcome title at the top of the welcome screen"
   },
 
-  "welcomeSubtitle": "Sign in or create a new account",
+  "welcomeSubtitle": "Melden Sie sich an oder erstellen Sie ein neues Konto",
   "@welcomeSubtitle": {
     "description": "The subtitle below the welcome title"
   },
 
-  "signIn": "Sign in",
+  "signIn": "Anmelden",
   "@signIn": {
     "description": "Text for the sign-in button"
   },
 
-  "noAccount": "No account yet?",
+  "noAccount": "Noch kein Konto?",
   "@noAccount": {
     "description": "Prompt text for users who don't have an account"
   },
 
-  "signUp": "Sign up",
+  "signUp": "Registrieren",
   "@signUp": {
     "description": "Sign-up call to action"
   },
 
-  "english": "English",
+  "english": "Englisch",
   "@english": {
     "description": "Language name for English"
   },
@@ -33,15 +33,15 @@
   "@german": {
     "description": "Language name for German"
   },
-  "welcomeBack": "Welcome Back!",
-  "emailLabel": "Email address",
+  "welcomeBack": "Willkommen zurück!",
+  "emailLabel": "E-Mail-Adresse",
   "emailHint": "name@example.com",
-  "passwordLabel": "Password",
-  "passwordHint": "Enter your password",
-  "signInButton": "Sign in",
-  "loginSuccessTitle": "Success",
-  "loginSuccessMessage": "Login Successful",
-  "loginFailedTitle": "Login Failed",
-  "loginFailedMessage": "Error {statusCode}: {message}",
+  "passwordLabel": "Passwort",
+  "passwordHint": "Geben Sie Ihr Passwort ein",
+  "signInButton": "Anmelden",
+  "loginSuccessTitle": "Erfolg",
+  "loginSuccessMessage": "Login erfolgreich",
+  "loginFailedTitle": "Login fehlgeschlagen",
+  "loginFailedMessage": "Fehler {statusCode}: {message}",
   "okButton": "OK"
 }
