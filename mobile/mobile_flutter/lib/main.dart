@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uniconnect_app/core/router/app_router.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
-import 'core/injection_container.dart';
+import 'injection_container.dart';
 
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await init(); 
   runApp(const MyApp());
 }
 
@@ -22,6 +22,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => sl<AuthenticationBloc>()),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'UniConnect',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),

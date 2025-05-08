@@ -12,7 +12,7 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return  Scaffold(
-      backgroundColor: Color(AppSolidColors.primary),
+      backgroundColor: const Color(AppSolidColors.primary),
       body: Container(
         color: const Color(AppSolidColors.primary),
         child: const Center(
@@ -53,7 +53,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _navigateToNextScreen() async {
-    await Future.delayed(const Duration(seconds: 20));
+    await Future.delayed(const Duration(seconds: 3));
     // ignore: use_build_context_synchronously
     Navigator.pushReplacementNamed(context, '/login');
   }
