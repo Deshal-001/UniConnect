@@ -11,15 +11,15 @@ class LoginUser implements UsecaseWithParams<String, LoginUserParams> {
 
   @override
   ResultFuture<String> call(LoginUserParams params) async => _repository.login(
-        params.password,
         params.email,
+        params.password,
       );
 }
 
 class LoginUserParams extends Equatable {
   const LoginUserParams({
-    required this.password,
     required this.email,
+    required this.password,
   });
 
   // final String username;
