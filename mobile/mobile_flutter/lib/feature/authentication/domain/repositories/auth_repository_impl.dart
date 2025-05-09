@@ -39,17 +39,41 @@ class AuthRepoImplementation implements AuthenticationRepository {
     }
   }
 
-  // Uncomment and implement the register method if needed
-  // @override
-  // Future<String> register({required String email, required String password, required String fullName}) async {
-  //   final response = await api.register({
-  //     'email': email,
-  //     'password': password,
-  //     'fullName': fullName,
-  //   });
-  //   await TokenController.storeTokens({
-  //     TokenConstants.jwt: response.token,
-  //   });
-  //   return response.token;
-  // }
+  @override
+  Future<Either<Failure, String>> signup({
+    required String email,
+    required String password,
+    required String fullName,
+    required String location,
+    required DateTime birthday,
+    required int uniId,
+  }) async {
+    try {
+      final params = {
+        'email': email,
+        'password': password,
+        'fullName': fullName,
+        'location': location,
+        'birthday': birthday.toIso8601String(),
+        'uniId': uniId,
+      };
+      final response = await api.signup(params);
+
+      if (response.token.isEmpty) {
+        throw const ApiException(
+            statusCode: '401', message: 'Invalid credentials');
+      }
+      // Store the JWT token
+      await TokenController.storeTokens({
+        TokenConstants.jwt: response.token,
+      });
+
+      return Right(response.token);
+    } on DioException catch (e) {
+      return Left(ApiException.fromDioException(e));
+    } catch (e) {
+      return const Left(ApiException(
+          message: 'Unexpected error occurred', statusCode: '500'));
+    }
+  }
 }

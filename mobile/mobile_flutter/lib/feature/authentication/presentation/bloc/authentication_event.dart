@@ -22,3 +22,31 @@ class LoginUserEvent extends AuthenticationEvent {
         password,
       ];
 }
+
+class SignUpUserEvent extends AuthenticationEvent {
+  const SignUpUserEvent({
+    required this.email,
+    required this.password,
+    required this.fullName,
+    required this.location,
+    required this.birthday,
+    required this.uniId,
+  });
+
+  final String email;
+  final String password;
+  final String fullName;
+  final String location;
+  final DateTime birthday;
+  final int uniId;
+
+  @override
+  List<Object> get props => [
+        email,
+        password,
+        fullName,
+        location,
+        birthday,
+        uniId,
+      ];
+}

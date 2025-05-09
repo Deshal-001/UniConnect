@@ -3,8 +3,7 @@ import 'package:retrofit/http.dart';
 
 import '../models/authentication_response_model.dart';
 
-part 'auth_api_service.g.dart';
-
+part 'auth_remote_datasource.g.dart'; 
 
 @RestApi(baseUrl: "http://localhost:8080/api/auth")
 abstract class AuthApiRemoteDataSource {
@@ -12,6 +11,9 @@ abstract class AuthApiRemoteDataSource {
 
   @POST("/login")
   Future<AuthenticationResponseModel> login(@Body() Map<String, dynamic> body);
+
+  @POST("/register")
+  Future<AuthenticationResponseModel> signup(@Body() Map<String, dynamic> body);
 }
 
 class ParseErrorLogger {

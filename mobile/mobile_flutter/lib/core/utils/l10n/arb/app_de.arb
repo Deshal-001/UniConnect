@@ -43,5 +43,21 @@
   "loginSuccessMessage": "Login erfolgreich",
   "loginFailedTitle": "Login fehlgeschlagen",
   "loginFailedMessage": "Fehler {statusCode}: {message}",
-  "okButton": "OK"
+  "okButton": "OK",
+  "welcomeBack": "Willkommen zurück!",
+  "signInButton": "Registrieren",
+  "loginSuccessTitle": "Erfolg",
+  "loginSuccessMessage": "Registrierung erfolgreich",
+  "loginFailedTitle": "Registrierung fehlgeschlagen",
+  "loginFailedMessage": "Fehler {statusCode}: {message}",
+  "okButton": "OK",
+  "fullNameLabel": "Vollständiger Name",
+  "fullNameHint": "Geben Sie Ihren vollständigen Namen ein",
+  "birthdayLabel": "Geburtstag",
+  "birthdayHint": "TT/MM/JJJJ",
+  "universityLabel": "Wählen Sie Ihre Universität",
+  "universityHint": "Universität",
+  "repeatPasswordLabel": "Passwort wiederholen",
+  "repeatPasswordHint": "Wiederholen Sie das neue Passwort",
+   "createNewAccount" : "Neues konto Erstellen"
 }

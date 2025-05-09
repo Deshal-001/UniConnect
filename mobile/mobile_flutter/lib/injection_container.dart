@@ -6,6 +6,7 @@ import 'package:uniconnect_app/feature/authentication/presentation/bloc/authenti
 
 import 'feature/authentication/data/data_sources/auth_remote_datasource.dart';
 import 'feature/authentication/domain/repositories/auth_repository_impl.dart';
+import 'feature/authentication/domain/use_cases/signup_usecase.dart';
 
 final sl = GetIt.instance;
 Future<void> init() async {
@@ -14,12 +15,14 @@ Future<void> init() async {
   sl
   ..registerFactory(()=> AuthenticationBloc(
     loginUser: sl(),
+    signUpUser: sl(),
   ))
   //Use Cases
   ..registerLazySingleton(()=> LoginUser(sl()))
+  ..registerLazySingleton(()=> SignUpUser(sl()))
   //Repository
   ..registerLazySingleton<AuthenticationRepository>(() => AuthRepoImplementation(
-    sl()
+    sl() 
   ))
   //Data Source
   ..registerLazySingleton(()=> AuthApiRemoteDataSource(sl()));
