@@ -62,6 +62,7 @@ public class EventService {
                 .creator(creator)
                 .university(university)
                 .restrictToUniversity(eventDto.isRestrictToUniversity())
+                .imgUrl(eventDto.getImgUrl())
                 .build();
         event = eventRepository.save(event);
         return mapToDto(event);
@@ -77,7 +78,7 @@ public class EventService {
 
         // Check university restriction
         if (event.isRestrictToUniversity() && event.getUniversity() != null) {
-            if (user.getUniversity() == null || !user.getUniversity().getId().equals(event.getUniversity().getId())) {
+            if (user.getUniversity() == null || !user.getUniversity().equals(event.getUniversity().getId())) {
                 throw new ApiException(ErrorCodes.UNIVERSITY_RESTRICTION);
             }
         }
@@ -176,6 +177,7 @@ public class EventService {
         dto.setLocation(event.getLocation());
         dto.setMaxParticipants(event.getMaxParticipants());
         dto.setCreatorId(event.getCreator().getId());
+        dto.setImgUrl(event.getImgUrl());
         dto.setCurrentAttendees((int) bookingRepository.countByEventId(event.getId()));
         if (event.getUniversity() != null) {
             dto.setUniversityId(event.getUniversity().getId());

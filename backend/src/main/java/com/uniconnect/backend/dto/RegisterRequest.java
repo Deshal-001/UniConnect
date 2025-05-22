@@ -14,5 +14,6 @@ public class RegisterRequest {
     private String fullName;
     private String location;
     private LocalDateTime birthday;
+    private String imgUrl;
     private String uniId;
 }

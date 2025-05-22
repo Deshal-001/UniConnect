@@ -6,14 +6,16 @@ part 'university.g.dart';
 
 @JsonSerializable()
 class University extends Equatable {
-  final String id;
-  final String name;
-  final String location;
+  final int? id;
+  final String? name;
+  final String? location;
+  final String? imgUrl;
 
   const University({
-    required this.id,
-    required this.name,
-    required this.location,
+     this.id,
+     this.name,
+     this.location,
+    this.imgUrl,
   });
 
 
@@ -26,6 +28,7 @@ class University extends Equatable {
         id,
         name,
         location,
+        imgUrl,
       ];
 
   @override

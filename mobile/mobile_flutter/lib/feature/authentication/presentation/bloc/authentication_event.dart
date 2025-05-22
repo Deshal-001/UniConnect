@@ -50,3 +50,5 @@ class SignUpUserEvent extends AuthenticationEvent {
         uniId,
       ];
 }
+
+

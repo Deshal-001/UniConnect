@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
+import 'package:uniconnect_app/feature/university/data/model/university_model.dart';
 
 import '../models/authentication_response_model.dart';
 
@@ -14,6 +15,13 @@ abstract class AuthApiRemoteDataSource {
 
   @POST("/register")
   Future<AuthenticationResponseModel> signup(@Body() Map<String, dynamic> body);
+
+  @GET("/university")
+  Future<List<UniversityModel>> getUniversities();
+
+  @GET("university/search")
+  Future<List<UniversityModel>> findUni(@Query("prefix") String prefix,);
+
 }
 
 class ParseErrorLogger {

@@ -48,8 +48,9 @@ public class AuthenticationController {
                 request.getFullName(),
                 request.getLocation(),
                 request.getBirthday(),
-                Long.valueOf(request.getUniId())
-        );
+                Long.valueOf(request.getUniId()),
+                request.getImgUrl()
+                );
         return AuthenticationResponse.builder().token(token).build();
     }
 
@@ -66,7 +67,8 @@ public class AuthenticationController {
                 request.getFullName(),
                 request.getLocation(),
                 request.getBirthday(),
-                Long.valueOf(request.getUniId())
+                Long.valueOf(request.getUniId()),
+                request.getImgUrl()
         );
         return AuthenticationResponse.builder().token(token).build();
     }
@@ -119,6 +121,7 @@ public class AuthenticationController {
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .role(user.getRole())
+                .location(user.getLocation())
                 .build();
     }
 

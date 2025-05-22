@@ -6,6 +6,7 @@ import '../../../../core/exception/api_exeption.dart';
 import '../../../../core/network/token_controller.dart';
 import '../../data/data_sources/auth_remote_datasource.dart';
 import '../../data/repositories/auth_repository.dart';
+import '../../../university/domain/entity/university.dart';
 
 class AuthRepoImplementation implements AuthenticationRepository {
   final AuthApiRemoteDataSource api;
@@ -69,6 +70,19 @@ class AuthRepoImplementation implements AuthenticationRepository {
       });
 
       return Right(response.token);
+    } on DioException catch (e) {
+      return Left(ApiException.fromDioException(e));
+    } catch (e) {
+      return const Left(ApiException(
+          message: 'Unexpected error occurred', statusCode: '500'));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<University>>> findUni(String prefix) async {
+    try {
+      final response = await api.findUni(prefix);
+      return Right(response);
     } on DioException catch (e) {
       return Left(ApiException.fromDioException(e));
     } catch (e) {

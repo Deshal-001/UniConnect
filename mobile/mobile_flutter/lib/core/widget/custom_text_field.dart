@@ -110,7 +110,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
                           ).then((value) {
                             if (value != null) {
                               DateFormat('dd/MM/yyyy').format(value);
-                              widget.controller.text = value.toIso8601String();
+                              widget.controller.text = DateFormat('dd/MM/yyyy').format(value);
                             }
                           });
                         },

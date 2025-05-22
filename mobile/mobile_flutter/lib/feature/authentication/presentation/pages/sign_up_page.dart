@@ -6,8 +6,11 @@ import 'package:logger/logger.dart';
 import 'package:uniconnect_app/core/widget/custom_text_field.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uniconnect_app/feature/university/presentation/bloc/uni_bloc.dart';
 
+import '../../../../core/helper/validation_method.dart';
 import '../../../../core/widget/custom_button.dart';
+import '../../../university/domain/entity/university.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -25,31 +28,79 @@ class _SignUpPageState extends State<SignUpPage> {
   final locationController = TextEditingController();
   final repeatPasswordController = TextEditingController();
 
+  late List<University> universities = [];
+  University? selectedUniversity;
+
   void _handleSignUp() {
+    final controllers = [
+      fullNameController,
+      emailController,
+      passwordController,
+      birthdayController,
+      locationController,
+      repeatPasswordController,
+    ];
+
+      if (controllers.any((controller) => controller.text.trim().isEmpty)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill in all fields')),
+      );
+      return;
+    }
     final fullName = fullNameController.text.trim();
     final email = emailController.text.trim();
     final password = passwordController.text.trim();
     final birthday = birthdayController.text.trim();
-    // final university = universityController.text.trim();
-    // final repeatPassword = repeatPasswordController.text.trim();
 
     try {
-      final parsedBirthday = DateFormat('yyyy-MM-dd').parse(birthday);
+      // Parse the date from 'dd/MM/yyyy' format
+      final parsedBirthday = DateFormat('dd/MM/yyyy').parse(birthday);
 
+      if (selectedUniversity == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please select a university')),
+        );
+        return;
+      }
+      if (!ValidationMethod().isPasswordsMatch(
+        password.trim(),
+        repeatPasswordController.text.trim(),
+      )) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Passwords do not match')),
+        );
+        return;
+      }
+      if (!ValidationMethod().isValidEmail(email.trim())) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a valid email')),
+        );
+        return;
+      }
+
+      // Trigger the sign-up event
       context.read<AuthenticationBloc>().add(SignUpUserEvent(
             fullName: fullName,
             email: email,
             password: password,
-            birthday: parsedBirthday,
+            birthday: parsedBirthday, // Use the parsed DateTime object
             location: locationController.text.trim(),
-            uniId: 1,
+            uniId: selectedUniversity!.id ?? 0,
           ));
     } catch (e) {
       Logger().e('Invalid date format: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Invalid date format. Please use yyyy-MM-dd.')),
+        const SnackBar(
+            content: Text('Invalid date format. Please use dd/MM/yyyy.')),
       );
     }
+  }
+
+  @override
+  void initState() {
+    Logger().e('SignUpPage initialized');
+    context.read<UniversityBloc>().add(const GetAllUniversitiesEvent());
+    super.initState();
   }
 
   @override
@@ -70,38 +121,71 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
         ),
-        body: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
-            if (state is SignUpUserSuccess) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text(loc.loginSuccessTitle),
-                  content: Text(loc.loginSuccessMessage),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(loc.okButton),
-                    )
-                  ],
-                ),
-              );
-            } else if (state is SignUpUserError) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text(loc.loginFailedTitle),
-                  content: Text('Error ${state.statusCode}: ${state.message}'),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(loc.okButton),
-                    )
-                  ],
-                ),
-              );
-            }
-          },
+        body: MultiBlocListener(
+          listeners: [
+            BlocListener<AuthenticationBloc, AuthenticationState>(
+                listener: (context, state) {
+              if (state is SignUpUserSuccess) {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(loc.loginSuccessTitle),
+                    content: Text(loc.loginSuccessMessage),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(loc.okButton),
+                      )
+                    ],
+                  ),
+                );
+              } else if (state is SignUpUserError) {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(loc.loginFailedTitle),
+                    content:
+                        Text('Error ${state.statusCode}: ${state.message}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(loc.okButton),
+                      )
+                    ],
+                  ),
+                );
+              }
+            }),
+            BlocListener<UniversityBloc, UnoversityState>(
+                listener: (context, state) {
+              if (state is GetAllUniversitiesError) {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(loc.loginFailedTitle),
+                    content:
+                        Text('Error ${state.statusCode}: ${state.message}'),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text(loc.okButton),
+                      )
+                    ],
+                  ),
+                );
+              } else if (state is GetAllUniversitiesSuccess) {
+                universities.clear();
+                setState(() {
+                  universities.addAll(state.universities);
+                });
+                Logger().e('Universities: ${universities.length}');
+              } else if (state is GetAllUniversitiesLoading) {
+                Logger().e('Loading universities...');
+              } else {
+                Logger().e('State: $state');
+              }
+            }),
+          ],
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
@@ -149,11 +233,41 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         const SizedBox(height: 15),
 
-                        // University
-                        CustomTextField(
-                          controller: universityController,
-                          label: loc.universityLabel,
-                          hintText: loc.universityHint,
+                        // University Dropdown
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(loc.universityLabel,
+                                style: TextStyle(
+                                  fontFamily: 'Inter',
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.grey.shade600,
+                                )),
+                            Padding(
+                              padding: const EdgeInsets.only(top: 8.0),
+                              child: DropdownButtonFormField<University>(
+                                value: selectedUniversity,
+                                items: universities
+                                    .map((university) => DropdownMenuItem(
+                                          value: university,
+                                          child: Text(university.name ?? ''),
+                                        ))
+                                    .toList(),
+                                onChanged: (value) {
+                                  setState(() {
+                                    selectedUniversity = value;
+                                  });
+                                },
+                                decoration: InputDecoration(
+                                  // labelText: loc.universityLabel,
+                                  hintText: loc.universityHint,
+                                  border: const OutlineInputBorder(),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 15),
                         // Location

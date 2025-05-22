@@ -45,4 +45,3 @@ final class SignUpUserError extends AuthenticationState {
   List<Object> get props => [message, statusCode];
 }
 
-
