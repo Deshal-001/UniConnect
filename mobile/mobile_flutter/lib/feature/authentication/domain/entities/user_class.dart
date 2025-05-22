@@ -1,7 +1,7 @@
 import 'package:equatable/equatable.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:uniconnect_app/core/enum/role.dart';
-import 'package:uniconnect_app/feature/authentication/domain/entities/university.dart';
+import 'package:uniconnect_app/feature/university/domain/entity/university.dart';
 
 part 'user_class.g.dart';
 
@@ -11,6 +11,7 @@ class User extends Equatable {
   final String email;
   final String fullName;
   final Role role;
+  final String? imgUrl;
   final University university;
 
   const User({
@@ -19,6 +20,7 @@ class User extends Equatable {
     required this.fullName,
     required this.role,
     required this.university,
+    this.imgUrl,
   });
 
   factory User.fromJson(Map<String, dynamic> json) => _$UserFromJson(json);
@@ -31,6 +33,7 @@ class User extends Equatable {
         fullName,
         role,
         university,
+        imgUrl,
       ];
 
   @override

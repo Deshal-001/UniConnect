@@ -16,5 +16,7 @@ public class UserDto {
     private String email;
     private String fullName;
     private Role role;
-    private University university;
+    private String location;
+    private String imgUrl;
+    private String university;
 }

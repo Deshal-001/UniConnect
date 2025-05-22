@@ -32,7 +32,11 @@ public class Event {
     @Column(nullable = false)
     private int maxParticipants;
 
+    @Column(nullable = false)
     private String location;
+
+    @Column(nullable = true)
+    private String imgUrl;
 
     @ManyToOne
     @JoinColumn(name = "creator_id", nullable = false)

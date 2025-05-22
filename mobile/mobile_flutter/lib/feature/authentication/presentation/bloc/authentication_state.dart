@@ -28,3 +28,20 @@ final class UserAuthenticatingError extends AuthenticationState {
   @override
   List<Object> get props => [message, statusCode];
 }
+
+final class SignUpUserLoading extends AuthenticationState {
+  const SignUpUserLoading();
+}
+final class SignUpUserSuccess extends AuthenticationState {
+  const SignUpUserSuccess();
+}
+final class SignUpUserError extends AuthenticationState {
+  const SignUpUserError(this.message, this.statusCode);
+
+  final String message;
+  final String statusCode;
+
+  @override
+  List<Object> get props => [message, statusCode];
+}
+

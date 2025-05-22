@@ -32,6 +32,8 @@ public class EventDto {  // Add 'public' here
 
     private String location;
 
+    private String imgUrl;
+
     private Long creatorId;
 
     private Long universityId;

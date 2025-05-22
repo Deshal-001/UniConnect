@@ -1,11 +1,16 @@
 package com.uniconnect.backend.controller;
 
 import com.uniconnect.backend.dto.*;
+import com.uniconnect.backend.model.User;
 import com.uniconnect.backend.service.AuthenticationService;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -43,8 +48,9 @@ public class AuthenticationController {
                 request.getFullName(),
                 request.getLocation(),
                 request.getBirthday(),
-                Long.valueOf(request.getUniId())
-        );
+                Long.valueOf(request.getUniId()),
+                request.getImgUrl()
+                );
         return AuthenticationResponse.builder().token(token).build();
     }
 
@@ -61,7 +67,8 @@ public class AuthenticationController {
                 request.getFullName(),
                 request.getLocation(),
                 request.getBirthday(),
-                Long.valueOf(request.getUniId())
+                Long.valueOf(request.getUniId()),
+                request.getImgUrl()
         );
         return AuthenticationResponse.builder().token(token).build();
     }
@@ -103,6 +110,21 @@ public class AuthenticationController {
         var users = authenticationService.getAllUsers();
         return UsersListResponse.builder().userList(users).build();
     }
+
+
+    @GetMapping("/user")
+    public UserDto getUserByEmail(@RequestParam String email) {
+        User user = authenticationService.findUserByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found"));
+        return UserDto.builder()
+                .id(user.getId())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .role(user.getRole())
+                .location(user.getLocation())
+                .build();
+    }
+
 
 
 }

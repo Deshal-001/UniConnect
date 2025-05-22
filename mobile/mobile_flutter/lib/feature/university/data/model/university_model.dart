@@ -1,6 +1,6 @@
 
 import 'package:json_annotation/json_annotation.dart';
-import 'package:uniconnect_app/feature/authentication/domain/entities/university.dart';
+import 'package:uniconnect_app/feature/university/domain/entity/university.dart';
 
 part 'university_model.g.dart';
 
@@ -8,9 +8,10 @@ part 'university_model.g.dart';
 class UniversityModel extends University {
 
   const UniversityModel({
-    required super.id,
-    required super.name,
-    required super.location,
+     super.id,
+     super.name,
+     super.location,
+    super.imgUrl,
   });
 
   factory UniversityModel.fromJson(Map<String, dynamic> json) =>

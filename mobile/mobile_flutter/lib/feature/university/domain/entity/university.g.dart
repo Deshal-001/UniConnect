@@ -7,9 +7,10 @@ part of 'university.dart';
 // **************************************************************************
 
 University _$UniversityFromJson(Map<String, dynamic> json) => University(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      location: json['location'] as String,
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      location: json['location'] as String?,
+      imgUrl: json['imgUrl'] as String?,
     );
 
 Map<String, dynamic> _$UniversityToJson(University instance) =>
@@ -17,4 +18,5 @@ Map<String, dynamic> _$UniversityToJson(University instance) =>
       'id': instance.id,
       'name': instance.name,
       'location': instance.location,
+      'imgUrl': instance.imgUrl,
     };

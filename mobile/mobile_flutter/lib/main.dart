@@ -5,6 +5,7 @@ import 'package:uniconnect_app/feature/authentication/presentation/bloc/authenti
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+import 'feature/university/presentation/bloc/uni_bloc.dart';
 import 'injection_container.dart';
 
 void main() async {
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
     return MultiBlocProvider(
       providers: [
         BlocProvider(create: (context) => sl<AuthenticationBloc>()),
+        BlocProvider(create: (context) => sl<UniversityBloc>()),
       ],
       child: MaterialApp(
           localizationsDelegates: AppLocalizations.localizationsDelegates,

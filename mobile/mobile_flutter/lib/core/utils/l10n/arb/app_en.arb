@@ -43,5 +43,21 @@
   "loginSuccessMessage": "Login Successful",
   "loginFailedTitle": "Login Failed",
   "loginFailedMessage": "Error {statusCode}: {message}",
-  "okButton": "OK"
+  "okButton": "OK",
+    "welcomeBack": "Welcome Back!",
+  "signInButton": "Sign up",
+  "loginSuccessTitle": "Success",
+  "loginSuccessMessage": "Registration Successful",
+  "loginFailedTitle": "Registration Failed",
+  "loginFailedMessage": "Error {statusCode}: {message}",
+  "okButton": "OK",
+  "fullNameLabel": "Full Name",
+  "fullNameHint": "Enter your full name",
+  "birthdayLabel": "Birthday",
+  "birthdayHint": "DD/MM/YYYY",
+  "universityLabel": "Select Your University",
+  "universityHint": "University",
+  "repeatPasswordLabel": "Repeat password",
+  "repeatPasswordHint": "Repeat new password",
+  "createNewAccount": "Create new account"
 }

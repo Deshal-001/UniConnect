@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
+import 'package:logger/logger.dart';
 import 'package:uniconnect_app/core/constants/solid_colors.dart';
 
 class CustomTextField extends StatefulWidget {
@@ -8,6 +10,7 @@ class CustomTextField extends StatefulWidget {
   final String hintText;
   final bool isPassword;
   final TextInputType keyboardType;
+  final bool isDatePicker;
 
   const CustomTextField({
     super.key,
@@ -16,6 +19,7 @@ class CustomTextField extends StatefulWidget {
     required this.hintText,
     this.isPassword = false,
     this.keyboardType = TextInputType.text,
+    this.isDatePicker = false,
   });
 
   @override
@@ -76,15 +80,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
                         obscureText = !obscureText;
                       });
                     },
-                  child: SvgPicture.asset(
+                    child: SvgPicture.asset(
                       'assets/icons/eye.svg',
                       height: 15,
                       width: 15,
                       // ignore: deprecated_member_use
-                      color: obscureText ? Colors.grey : const Color(AppSolidColors.primary),
+                      color: obscureText
+                          ? Colors.grey
+                          : const Color(AppSolidColors.primary),
                       fit: BoxFit.scaleDown,
                     ),
-                )
+                  )
                 // IconButton(
                 //     icon: const Icon(Icons.visibility_off),
                 //     onPressed: () {
@@ -93,7 +99,34 @@ class _CustomTextFieldState extends State<CustomTextField> {
                 //       });
                 //     },
                 //   )
-                : null,
+                : widget.isDatePicker
+                    ? GestureDetector(
+                        onTap: () {
+                          showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1948),
+                            lastDate: DateTime(2100),
+                          ).then((value) {
+                            if (value != null) {
+                              DateFormat('dd/MM/yyyy').format(value);
+                              widget.controller.text = DateFormat('dd/MM/yyyy').format(value);
+                            }
+                          });
+                        },
+                        child: const Icon(
+                          Icons.calendar_today,
+                          color: Colors.grey,
+                          size: 15,
+                        ),
+                        //  SvgPicture.asset(
+                        //   'assets/icons/calendar.svg',
+                        //   height: 15,
+                        //   width: 15,
+                        //   fit: BoxFit.scaleDown,
+                        // ),
+                      )
+                    : null,
           ),
         ),
       ],

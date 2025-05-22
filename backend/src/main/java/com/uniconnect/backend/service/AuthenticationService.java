@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -52,7 +53,7 @@ public class AuthenticationService {
     }
 
     // Registers new user with default USER role and generates JWT token
-    public String register(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
+    public String register(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId, String imgUrl) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new ApiException(ErrorCodes.USER_ALREADY_EXISTS);
         }
@@ -67,7 +68,8 @@ public class AuthenticationService {
                 .location(location)
                 .birthday(birthday)
                 .role(Role.USER)
-                .university(new University(university.getId(), university.getName(), university.getLocation()))
+                .imgUrl(imgUrl)
+                .university(new University(university.getId(), university.getName(), university.getLocation(),university.getImgUrl()))
                 .build();
         userRepository.save(user);
 
@@ -79,7 +81,7 @@ public class AuthenticationService {
     }
 
     // Registers new admin user and generates JWT token
-    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId) {
+    public String registerAdmin(String email, String password, String fullName, String location, LocalDateTime birthday, Long uniId, String imgUrl) {
         if (userRepository.findByEmail(email).isPresent()) {
             throw new ApiException(ErrorCodes.USER_ALREADY_EXISTS);
         }
@@ -94,7 +96,8 @@ public class AuthenticationService {
                 .location(location)
                 .birthday(birthday)
                 .role(Role.ADMIN)
-                .university(new University(university.getId(), university.getName(), university.getLocation()))
+                .imgUrl(imgUrl)
+                .university(new University(university.getId(), university.getName(), university.getLocation(),university.getImgUrl()))
                 .build();
         userRepository.save(user);
 
@@ -115,5 +118,10 @@ public class AuthenticationService {
     // Retrieves all users from repository
     public List<User> getAllUsers() {
         return userRepository.findAll();
+    }
+
+    public Optional<User> findUserByEmail(String email){
+        return userRepository.findByEmail(email);
+
     }
 }

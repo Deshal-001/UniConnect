@@ -8,9 +8,10 @@ part of 'university_model.dart';
 
 UniversityModel _$UniversityModelFromJson(Map<String, dynamic> json) =>
     UniversityModel(
-      id: json['id'] as String,
-      name: json['name'] as String,
-      location: json['location'] as String,
+      id: (json['id'] as num?)?.toInt(),
+      name: json['name'] as String?,
+      location: json['location'] as String?,
+      imgUrl: json['imgUrl'] as String?,
     );
 
 Map<String, dynamic> _$UniversityModelToJson(UniversityModel instance) =>
@@ -18,4 +19,5 @@ Map<String, dynamic> _$UniversityModelToJson(UniversityModel instance) =>
       'id': instance.id,
       'name': instance.name,
       'location': instance.location,
+      'imgUrl': instance.imgUrl,
     };

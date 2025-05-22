@@ -13,6 +13,7 @@ User _$UserFromJson(Map<String, dynamic> json) => User(
       role: $enumDecode(_$RoleEnumMap, json['role']),
       university:
           University.fromJson(json['university'] as Map<String, dynamic>),
+      imgUrl: json['imgUrl'] as String?,
     );
 
 Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
@@ -20,6 +21,7 @@ Map<String, dynamic> _$UserToJson(User instance) => <String, dynamic>{
       'email': instance.email,
       'fullName': instance.fullName,
       'role': _$RoleEnumMap[instance.role]!,
+      'imgUrl': instance.imgUrl,
       'university': instance.university,
     };
 

@@ -35,9 +35,14 @@ private Long id;
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(nullable = true)
+    private String imgUrl;
+
     @ManyToOne
     @JoinColumn(name = "university_id")
     private University university;
+
+
 
 
 

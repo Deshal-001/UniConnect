@@ -17,7 +17,7 @@ public class University {
     private Long id;
     @Column(nullable = false)
     private String name;
-
+    private String imgUrl;
     private String location;
 
 }
