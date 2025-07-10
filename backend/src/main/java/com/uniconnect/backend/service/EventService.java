@@ -1,6 +1,7 @@
 package com.uniconnect.backend.service;
 
 import com.uniconnect.backend.dto.EventDto;
+import com.uniconnect.backend.dto.UniDto;
 import com.uniconnect.backend.dto.UserDto;
 import com.uniconnect.backend.exception.ApiException;
 import com.uniconnect.backend.exception.ErrorCodes;
@@ -166,6 +167,13 @@ public class EventService {
                             .build();
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public List<EventDto> findUniByLocation(String location){
+        return eventRepository.findByLocationContainingIgnoreCase(location).stream().map(
+                this:: mapToDto
+        ).toList();
     }
 
     private EventDto mapToDto(Event event) {

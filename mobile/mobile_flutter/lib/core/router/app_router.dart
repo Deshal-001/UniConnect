@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/pages/welcome_page.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/pages/login_page.dart';
+import 'package:uniconnect_app/feature/event/presentation/page/event_list_page.dart';
 import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
 import '../../feature/authentication/presentation/pages/sign_up_page.dart';
@@ -14,6 +15,7 @@ class AppRouter {
   static const String settings = '/settings';
   static const String about = '/about';
   static const String contact = '/contact';
+  static const String eventList = '/eventList';
 
 
   static Map<String, WidgetBuilder> routes = {
@@ -21,6 +23,7 @@ class AppRouter {
     home: (context) => const WelcomePage(),
     login: (context) => const LoginPage(),
     register: (context) => const SignUpPage(),
+    eventList: (context) => const EventListPage(),
     // profile: (context) => const ProfilePage(),
     // settings: (context) => const SettingsPage(),
     // about: (context) => const AboutPage(),

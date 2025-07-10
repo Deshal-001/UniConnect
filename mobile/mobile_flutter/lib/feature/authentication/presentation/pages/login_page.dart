@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:uniconnect_app/core/router/app_router.dart';
 import 'package:uniconnect_app/core/widget/custom_text_field.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -55,19 +56,7 @@ class _LoginPageState extends State<LoginPage> {
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) {
             if (state is UserAuthenticated) {
-              showDialog(
-                context: context,
-                builder: (_) => AlertDialog(
-                  title: Text(loc.loginSuccessTitle),
-                  content: Text(loc.loginSuccessMessage),
-                  actions: [
-                    TextButton(
-                      onPressed: () => Navigator.pop(context),
-                      child: Text(loc.okButton),
-                    )
-                  ],
-                ),
-              );
+              Navigator.pushNamedAndRemoveUntil(context, AppRouter.eventList, (route) => false);
             } else if (state is UserAuthenticatingError) {
               showDialog(
                 context: context,
@@ -132,7 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                       onPressed:
                           state is AuthenticatingUser ? null : _handleLogin,
                       isLoading: state is AuthenticatingUser,
-                      text: loc.signInButton,
+                      text: 'Sign In',
                     );
                   },
                 ),

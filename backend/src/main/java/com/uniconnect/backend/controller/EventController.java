@@ -1,6 +1,7 @@
 package com.uniconnect.backend.controller;
 
 import com.uniconnect.backend.dto.EventDto;
+import com.uniconnect.backend.dto.UniDto;
 import com.uniconnect.backend.dto.UserDto;
 import com.uniconnect.backend.model.University;
 import com.uniconnect.backend.service.EventService;
@@ -66,6 +67,12 @@ public class EventController {
     @PreAuthorize("hasRole('ADMIN') or @securityService.isEventCreator(#id, authentication)")
     public ResponseEntity<List<UserDto>> getEventAttendees(@PathVariable Long id) {
         return ResponseEntity.ok(eventService.getEventAttendees(id));
+    }
+
+    // Find Events by location (partial match, case-insensitive)
+    @GetMapping("event/by-location")
+    public ResponseEntity<List<EventDto>> findByLocation(@RequestParam("location") String location) {
+        return ResponseEntity.ok(eventService.findUniByLocation(location));
     }
 
     @GetMapping("/universities")

@@ -2,11 +2,12 @@ import 'package:dio/dio.dart';
 import 'package:retrofit/http.dart';
 import 'package:uniconnect_app/feature/university/data/model/university_model.dart';
 
+import '../../../../core/constants/api_constants.dart';
 import '../models/authentication_response_model.dart';
 
 part 'auth_remote_datasource.g.dart'; 
 
-@RestApi(baseUrl: "http://localhost:8080/api/auth")
+@RestApi(baseUrl: "$baseUrl/auth")
 abstract class AuthApiRemoteDataSource {
   factory AuthApiRemoteDataSource(Dio dio, {String baseUrl}) = _AuthApiRemoteDataSource;
 

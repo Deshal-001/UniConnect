@@ -14,7 +14,7 @@ class _AuthApiRemoteDataSource implements AuthApiRemoteDataSource {
     this.baseUrl,
     this.errorLogger,
   }) {
-    baseUrl ??= 'http://localhost:8080/api/auth';
+    baseUrl ??= 'http://localhost:8080/api//auth';
   }
 
   final Dio _dio;
