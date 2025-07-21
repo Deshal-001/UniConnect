@@ -21,9 +21,9 @@ class _EventListPageState extends State<EventListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Event List'),
-      ),
+      // appBar: AppBar(
+      //   title: const Text('Event List'),
+      // ),
       body: BlocListener<EventBloc, EventState>(
         listener: (context, state) {
           if (state is EventError) {
@@ -48,7 +48,7 @@ class _EventListPageState extends State<EventListPage> {
                 },
               );
             } else {
-              return Center(child: Text('No events found'));
+              return const Center(child: Text('No events found'));
             }
           },
         ),
