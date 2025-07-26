@@ -6,6 +6,7 @@ import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
 import '../../feature/authentication/presentation/pages/sign_up_page.dart';
 
+
 class AppRouter {
   static const String splash = '/';
   static const String home = '/home';

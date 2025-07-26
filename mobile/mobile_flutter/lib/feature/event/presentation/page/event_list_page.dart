@@ -51,7 +51,7 @@ class _EventListPageState extends State<EventListPage> {
                           final event = state.events[index];
                           return index != 0
                               ? EventWidget(event: event)
-                              : MainEventWidget(event: event, context: context);
+                              : MainEventWidget(event: event);
                         },
                       ),
                     ),
