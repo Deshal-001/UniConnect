@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:logger/logger.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:uniconnect_app/core/widget/custom_text_field.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -10,6 +11,7 @@ import 'package:uniconnect_app/feature/university/presentation/bloc/uni_bloc.dar
 
 import '../../../../core/helper/validation_method.dart';
 import '../../../../core/widget/custom_button.dart';
+import '../../../shared/splash_screen.dart';
 import '../../../university/domain/entity/university.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -41,7 +43,7 @@ class _SignUpPageState extends State<SignUpPage> {
       repeatPasswordController,
     ];
 
-      if (controllers.any((controller) => controller.text.trim().isEmpty)) {
+    if (controllers.any((controller) => controller.text.trim().isEmpty)) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Please fill in all fields')),
       );
@@ -126,17 +128,17 @@ class _SignUpPageState extends State<SignUpPage> {
             BlocListener<AuthenticationBloc, AuthenticationState>(
                 listener: (context, state) {
               if (state is SignUpUserSuccess) {
-                showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text(loc.loginSuccessTitle),
-                    content: Text(loc.loginSuccessMessage),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.pop(context),
-                        child: Text(loc.okButton),
-                      )
-                    ],
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => PersistentTabView(
+                      context,
+                      controller: PersistentTabController(),
+                      screens: buildScreens(),
+                      items: navBarsItems(),
+                      backgroundColor: Colors.grey.shade100,
+                      navBarHeight: 50,
+                      navBarStyle: NavBarStyle.style6,
+                    ),
                   ),
                 );
               } else if (state is SignUpUserError) {

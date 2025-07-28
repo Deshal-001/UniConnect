@@ -14,6 +14,7 @@ abstract class BaseButton extends StatelessWidget {
   final Widget? iconRight;
   final Widget? iconLeft;
   final RichText? richTextWidget;
+  final bool? enable;
 
   const BaseButton({
     super.key,
@@ -30,6 +31,7 @@ abstract class BaseButton extends StatelessWidget {
     this.iconRight,
     this.iconLeft,
     this.richTextWidget,
+    this.enable,
   });
 
   /// Abstract method to be implemented in concrete button widgets

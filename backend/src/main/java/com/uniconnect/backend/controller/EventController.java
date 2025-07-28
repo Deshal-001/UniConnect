@@ -79,4 +79,10 @@ public class EventController {
     public ResponseEntity<List<University>> getAllUniversities() {
         return ResponseEntity.ok(universityRepository.findAll());
     }
+
+    @GetMapping("/event/booked-by-user/{userId}")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<List<EventDto>> findBookedEventsByUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(eventService.findBookedEventsByUserId(userId));
+    }
 }

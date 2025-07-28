@@ -176,6 +176,15 @@ public class EventService {
         ).toList();
     }
 
+    @Transactional
+    public List<EventDto> findBookedEventsByUserId(Long id) {
+        List<Booking> bookingList = bookingRepository.findBookingByUserId(id);
+        return bookingList.stream()
+                .map(Booking::getEvent)
+                .map(this::mapToDto)
+                .collect(Collectors.toList());
+    }
+
     private EventDto mapToDto(Event event) {
         EventDto dto = new EventDto();
         dto.setId(event.getId());

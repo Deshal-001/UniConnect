@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
-import 'package:logger/logger.dart';
 import 'package:uniconnect_app/core/constants/solid_colors.dart';
 
 class CustomTextField extends StatefulWidget {

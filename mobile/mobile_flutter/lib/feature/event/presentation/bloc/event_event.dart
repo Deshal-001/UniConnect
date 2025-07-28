@@ -18,3 +18,19 @@ final class FindEventByLocation extends EventEvent {
   @override
   List<Object> get props => [location];
 }
+
+final class BookEvent extends EventEvent {
+  const BookEvent({required this.eventId});
+  final int eventId;
+
+  @override
+  List<Object> get props => [eventId];
+}
+
+final class FindBookedEventsByUserId extends EventEvent {
+  const FindBookedEventsByUserId({required this.userId});
+  final int userId;
+
+  @override
+  List<Object> get props => [userId];
+}

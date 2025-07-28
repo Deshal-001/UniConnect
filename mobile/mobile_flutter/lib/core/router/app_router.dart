@@ -2,9 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/pages/welcome_page.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/pages/login_page.dart';
 import 'package:uniconnect_app/feature/event/presentation/page/event_list_page.dart';
+import 'package:uniconnect_app/feature/shared/profile_screen.dart';
 import 'package:uniconnect_app/feature/shared/splash_screen.dart';
 
 import '../../feature/authentication/presentation/pages/sign_up_page.dart';
+import '../../feature/event/presentation/page/booked_event_page.dart';
+import '../../feature/event/presentation/page/event_search_page.dart';
 
 
 class AppRouter {
@@ -17,6 +20,8 @@ class AppRouter {
   static const String about = '/about';
   static const String contact = '/contact';
   static const String eventList = '/eventList';
+  static const String eventSearch = '/eventSearch';
+  static const String bookedEvents = '/bookedEvents';
 
 
   static Map<String, WidgetBuilder> routes = {
@@ -25,7 +30,9 @@ class AppRouter {
     login: (context) => const LoginPage(),
     register: (context) => const SignUpPage(),
     eventList: (context) => const EventListPage(),
-    // profile: (context) => const ProfilePage(),
+    eventSearch: (context) => const EventSearchPage(),
+    bookedEvents : (context) => const BookedEventPage(),
+    profile: (context) => const ProfilePage(),
     // settings: (context) => const SettingsPage(),
     // about: (context) => const AboutPage(),
     // contact: (context) => const ContactPage(),

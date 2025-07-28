@@ -9,19 +9,25 @@ class MainEventWidget extends StatelessWidget {
   const MainEventWidget({
     super.key,
     required this.event,
+    required this.onRefresh,
   });
 
   final Event event;
+  final VoidCallback onRefresh;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.of(context, rootNavigator: true).push(
-          MaterialPageRoute(
-            builder: (_) => EventPage(event: event),
-          ),
-        );
+        Navigator.of(context, rootNavigator: true)
+            .push(
+              MaterialPageRoute(
+                builder: (_) => EventPage(event: event),
+              ),
+            )
+            .then((result) {
+          if (result != null) onRefresh();
+        });
       },
       child: Card(
         elevation: 0,
@@ -39,7 +45,7 @@ class MainEventWidget extends StatelessWidget {
                 topRight: Radius.circular(12),
               ),
               child: Image.asset(
-                'assets/images/img1.jpg',
+                event.imgUrl ?? 'assets/images/img1.jpg',
                 fit: BoxFit.cover,
                 height: 150,
                 width: double.infinity,

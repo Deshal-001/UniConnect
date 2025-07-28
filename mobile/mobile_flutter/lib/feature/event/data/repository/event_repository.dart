@@ -4,6 +4,8 @@ import '../../domain/entity/event.dart';
 abstract class EventRepository {
   ResultFuture<List<Event>> getAllEvents();
   ResultFuture<List<Event>> findEventByLocation(String prefix);
+  ResultFuture<Event> bookEvent(int eventId);
+  ResultFuture<List<Event>> findBookedEventsByUserId(int userId);
 
   // ResultFuture<List<Event>> getUpcomingEvents();
   // ResultFuture<Event> getEventById(String id);

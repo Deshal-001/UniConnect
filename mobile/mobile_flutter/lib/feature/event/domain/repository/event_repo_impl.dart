@@ -13,8 +13,9 @@ class EventRepoImplementation implements EventRepository {
 
   EventRepoImplementation(this.api);
 
-    @override
-  Future<Either<Failure, List<Event>>> findEventByLocation(String prefix) async {
+  @override
+  Future<Either<Failure, List<Event>>> findEventByLocation(
+      String prefix) async {
     try {
       final response = await api.findUniByLocation(prefix);
       return Right(response);
@@ -25,10 +26,12 @@ class EventRepoImplementation implements EventRepository {
           message: 'Unexpected error occurred', statusCode: '500'));
     }
   }
+
   @override
   Future<Either<Failure, List<Event>>> getAllEvents() async {
     try {
       final response = await api.getEvents();
+      Logger().i(response);
       return Right(response);
     } on DioException catch (e) {
       Logger().e('Error fetching events: ${e.message}');
@@ -39,5 +42,33 @@ class EventRepoImplementation implements EventRepository {
     }
   }
 
-}
+  @override
+  Future<Either<Failure, Event>> bookEvent(int eventId) async {
+    try {
+      final response = await api.bookEvent(eventId);
+      return Right(response);
+    } on DioException catch (e) {
+      Logger().e('Error booking event: ${e.message}');
+      return Left(ApiException.fromDioException(e));
+    } catch (e) {
+      return const Left(ApiException(
+          message: 'Unexpected error occurred', statusCode: '500'));
+    }
+  }
 
+  @override
+  Future<Either<Failure, List<Event>>> findBookedEventsByUserId(
+      int userId) async {
+    try {
+      final response = await api.findBookedEventsByUserId(userId);
+      Logger().i(response);
+      return Right(response);
+    } on DioException catch (e) {
+      Logger().e('Error fetching booked events: ${e.message}');
+      return Left(ApiException.fromDioException(e));
+    } catch (e) {
+      return const Left(ApiException(
+          message: 'Unexpected error occurred', statusCode: '500'));
+    }
+  }
+}

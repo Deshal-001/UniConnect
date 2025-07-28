@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:uniconnect_app/core/router/app_router.dart';
+import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:uniconnect_app/core/widget/custom_text_field.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/widget/custom_button.dart';
+import '../../../shared/splash_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -54,9 +55,21 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
-          listener: (context, state) {
+          listener: (context, state) async {
             if (state is UserAuthenticated) {
-              Navigator.pushNamedAndRemoveUntil(context, AppRouter.eventList, (route) => false);
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(
+                  builder: (context) => PersistentTabView(
+                    context,
+                    controller: PersistentTabController(),
+                    screens: buildScreens(),
+                    items: navBarsItems(),
+                    backgroundColor: Colors.grey.shade100,
+                    navBarHeight: 50,
+                    navBarStyle: NavBarStyle.style6,
+                  ),
+                ),
+              );
             } else if (state is UserAuthenticatingError) {
               showDialog(
                 context: context,
@@ -114,7 +127,6 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                 ),
-                // Button at the bottom
                 BlocBuilder<AuthenticationBloc, AuthenticationState>(
                   builder: (context, state) {
                     return CustomButton(

@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
+import 'package:logger/logger.dart';
 import 'package:uniconnect_app/feature/authentication/data/repositories/auth_repository.dart';
 import 'package:uniconnect_app/feature/authentication/domain/use_cases/login_usecase.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
@@ -12,7 +13,9 @@ import 'feature/authentication/domain/use_cases/signup_usecase.dart';
 import 'feature/event/data/data_source/event_remote_datasource.dart';
 import 'feature/event/data/repository/event_repository.dart';
 import 'feature/event/domain/repository/event_repo_impl.dart';
+import 'feature/event/domain/usecase/book_event.dart';
 import 'feature/event/domain/usecase/get_all_events.dart';
+import 'feature/event/domain/usecase/get_booked_events.dart';
 import 'feature/event/presentation/bloc/event_bloc.dart';
 import 'feature/university/data/data_source/uni_remote_datasource.dart';
 import 'feature/university/data/repository/uni_repositroy.dart';
@@ -29,6 +32,7 @@ Future<void> init() async {
       InterceptorsWrapper(
         onRequest: (options, handler) async {
           final token = await TokenController.getToken();
+          Logger().i(token);
           if (token != null && token.isNotEmpty) {
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -71,9 +75,13 @@ Future<void> init() async {
 
   //Event Feature
   // sl
-  ..registerFactory(() => EventBloc(getAllEvents: sl()))
+  ..registerFactory(() => EventBloc(getAllEvents: sl()
+  , bookEvent: sl()
+  , getBookedEvent: sl()))
   //Use Cases
   ..registerLazySingleton(() => GetAllEvents(sl()))
+  ..registerLazySingleton(() => BookEventUsecase(sl()))
+  ..registerLazySingleton(() => GetBookedEventUsecase(sl()))
   //Repository
   ..registerLazySingleton<EventRepository>(() => EventRepoImplementation(sl()))
   //Data Source
