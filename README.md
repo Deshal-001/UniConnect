@@ -104,4 +104,44 @@ UniConnect/
 │
 ├── docs/                            # Technical docs and architecture
 ├── .github/workflows/               # CI/CD workflows
-└── README.md                        # You are
+└── README.md                        # You are here
+```
+
+---
+
+## 📌 Roadmap
+
+- [x] Mobile app MVP
+- [x] Admin panel setup
+- [x] User & admin authentication (JWT)
+- [ ] Cloud deployment (Render/AWS)
+- [ ] Unit & integration testing
+- [ ] Email/Push notifications
+- [ ] Payment integration
+- [ ] Public event sharing (QR code, deep links)
+
+---
+
+## 🧠 Why This Project?
+
+This project demonstrates real-world application of full-stack development, integrating modern frontend, backend, and cloud technologies. It showcases your ability to:
+
+- Architect scalable systems
+- Work with modern frameworks (Flutter, Angular, Spring Boot)
+- Manage authentication and secure APIs
+- Use Git, GitHub Actions, and CI workflows
+- Build modular, maintainable codebases
+
+---
+
+## 📜 License
+
+This project is for educational and academic use only.
+
+---
+
+## 🙋 Contact
+
+**Author**: Deshal Kavindu  
+📧 [kavindudeshal2@gmail.com](mailto:kavindudeshal2@gmail.com)  
+🔗 GitHub: [github.com/Deshal-001](https://github.com/Deshal-001)
