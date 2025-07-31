@@ -1,120 +1,104 @@
-# UniConnect Mobile App
+🎓 UniConnect — University Event Booking Platform
+UniConnect is a full-stack event booking and management platform developed for universities, built with a scalable architecture and modern technologies. It enables students, staff, and admins to discover, manage, and organize campus events through a Flutter mobile app, Angular-based admin dashboard, and Spring Boot backend.
 
-UniConnect is a Flutter-based mobile application designed for university students, staff, and alumni to discover, book, and manage campus events. This app provides a seamless experience for event browsing, booking, and community engagement, with a focus on usability, security, and localization.
+🚀 This system was built as a real-world solution for academic institutions but is adaptable for any organization hosting internal or public events.
 
----
 
-## Features
+🧱 System Architecture
 
-- **Event Discovery:** Browse upcoming university events with detailed information, images, and locations.
-- **Event Booking:** RSVP for events directly from the app and manage your bookings.
-- **Search:** Quickly search for events by name, location, or date.
-- **Profile Management:** View and manage your profile, including logout and account deletion.
-- **Localization:** Multi-language support using Flutter's localization tools.
-- **Persistent Navigation:** Smooth navigation with a persistent bottom navigation bar.
-- **Secure Storage:** User authentication tokens and profile details are securely stored.
-- **Custom Animations:** Engaging Lottie animations for loading, success, and error states.
-- **Theming & Fonts:** Custom fonts and consistent theming for a modern look.
+📱 Mobile App – Flutter (/mobile/mobile_flutter)
+🖥️ Admin Panel – Angular (/admin_panel/uniconnect-admin-panel-angular)
+⚙️ Backend – Spring Boot + PostgreSQL (/backend)
+☁️ Deployment – CI/CD with GitHub Actions + Render/AWS (in progress)
 
----
 
-## Getting Started
+✨ Features
+🔵 Mobile App (Flutter)
 
-### Prerequisites
+Event listing and discovery with images and filtering
+Secure booking & ticket generation
+QR code check-in for participants
+Authentication (Sign up/login/logout)
+Profile management
+Multilingual support (localization)
+Persistent bottom navigation bar
+Clean architecture using BLoC and Provider
 
-- [Flutter SDK](https://flutter.dev/docs/get-started/install) (>=3.4.3 <4.0.0)
-- [Dart SDK](https://dart.dev/get-dart)
-- A device or emulator for iOS/Android
+🟢 Admin Dashboard (Angular)
 
-### Installation
+Admin login (JWT-based)
+Event creation, update, and deletion
+Booking overview & participant management
+Dashboard metrics and filtering
+Role-based access control (future enhancement)
 
-1. **Clone the repository:**
-   ```sh
-   git clone <https://github.com/Deshal-001/UniConnect.git>
-   cd mobile_flutter
-   ```
+🟡 Backend (Spring Boot)
 
-2. **Install dependencies:**
-   ```sh
-   flutter pub get
-   ```
+REST API with DTOs and validation
+JWT authentication
+User roles (Admin, User)
+Event & booking APIs
+PostgreSQL database integration
+Dockerfile & CI workflows
 
-3. **Run the app:**
-   ```sh
-   flutter run
-   ```
 
----
+🧪 Tech Stack
 
-## Project Structure
 
-- `lib/feature/event/` - Event-related pages, widgets, and BLoC logic
-- `lib/feature/authentication/` - Login and authentication logic
-- `lib/feature/shared/` - Shared screens like profile and splash
-- `lib/core/widget/` - Custom widgets (buttons, alerts, etc.)
-- `lib/core/network/` - Token and user data management
-- `lib/core/providers/` - State providers for events and user
-- `lib/core/utils/l10n/` - Localization files (ARB)
-- `assets/` - Images, icons, fonts, and Lottie animations
 
----
+Layer
+Technologies
 
-## Key Packages Used
 
-- [`flutter_bloc`](https://pub.dev/packages/flutter_bloc) - State management
-- [`provider`](https://pub.dev/packages/provider) - Dependency injection and state
-- [`flutter_secure_storage`](https://pub.dev/packages/flutter_secure_storage) - Secure local storage
-- [`persistent_bottom_nav_bar`](https://pub.dev/packages/persistent_bottom_nav_bar) - Bottom navigation
-- [`lottie`](https://pub.dev/packages/lottie) - Animations
-- [`intl`](https://pub.dev/packages/intl) - Internationalization
-- [`dio`](https://pub.dev/packages/dio) & [`retrofit`](https://pub.dev/packages/retrofit) - Networking
-- [`json_serializable`](https://pub.dev/packages/json_serializable) - JSON parsing
 
----
+Mobile
+Flutter, Dart, flutter_bloc, dio, retrofit
 
-## Assets
 
-- Place your images in `assets/images/`
-- Place your icons in `assets/icons/`
-- Place your Lottie animations in `assets/animations/`
-- Custom fonts are in `assets/fonts/`
+Admin Panel
+Angular 17+, TypeScript, Angular Material
 
----
 
-## Localization
+Backend
+Java 17, Spring Boot, PostgreSQL, JWT, Maven
 
-- ARB files are located in `lib/core/utils/l10n/arb/`
-- To generate localization files, run:
-  ```sh
-  flutter gen-l10n --arb-dir=lib/core/utils/l10n/arb/
-  ```
 
----
+DevOps
+GitHub Actions, Docker, Render (target)
 
-## Customization
 
-- **App Name & Description:** Edit in `pubspec.yaml`
-- **Versioning:** Update the `version:` field in `pubspec.yaml`
-- **Theme & Fonts:** Customize in `lib/core/widget/` and `pubspec.yaml`
 
----
+🚀 Setup Instructions
+1. Clone the Repo
+git clone https://github.com/Deshal-001/UniConnect.git
+cd UniConnect
 
-## Contributing
+2. Mobile App
+cd mobile/mobile_flutter
+flutter pub get
+flutter run
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/YourFeature`)
-3. Commit your changes (`git commit -am 'Add some feature'`)
-4. Push to the branch (`git push origin feature/YourFeature`)
-5. Create a new Pull Request
+3. Backend (Spring Boot)
+cd backend
+./mvnw spring-boot:run
 
----
+4. Admin Panel (Angular)
+cd admin_panel/uniconnect-admin-panel-angular
+npm install
+ng serve
 
-## License
 
-This project is intended for educational and internal university use only.
-
----
-
-## Contact
-
-For support or questions, please contact the UniConnect development team.
+📁 Repository Structure
+UniConnect/
+│
+├── mobile/                           # Flutter app
+│   └── mobile_flutter/
+│
+├── admin_panel/                     # Angular admin panel
+│   └── uniconnect-admin-panel-angular/
+│
+├── backend/                         # Spring Boot API
+│
+├── docs/                            # Technical docs and architecture
+├── .github/workflows/               # CI/CD workflows
+└── README.md                        # You are
