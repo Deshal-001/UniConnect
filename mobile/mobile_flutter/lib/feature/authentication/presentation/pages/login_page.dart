@@ -4,8 +4,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:persistent_bottom_nav_bar/persistent_bottom_nav_bar.dart';
 import 'package:uniconnect_app/core/widget/custom_text_field.dart';
 import 'package:uniconnect_app/feature/authentication/presentation/bloc/authentication_bloc.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:uniconnect_app/feature/authentication/presentation/pages/sign_up_page.dart'
+    show MainNavigationScreen;
 
+import '../../../../core/utils/l10n/arb/app_localizations.dart';
 import '../../../../core/widget/custom_button.dart';
 import '../../../shared/splash_screen.dart';
 
@@ -57,19 +59,13 @@ class _LoginPageState extends State<LoginPage> {
         body: BlocListener<AuthenticationBloc, AuthenticationState>(
           listener: (context, state) async {
             if (state is UserAuthenticated) {
-              Navigator.of(context).pushReplacement(
-                MaterialPageRoute(
-                  builder: (context) => PersistentTabView(
-                    context,
-                    controller: PersistentTabController(),
-                    screens: buildScreens(),
-                    items: navBarsItems(),
-                    backgroundColor: Colors.grey.shade100,
-                    navBarHeight: 50,
-                    navBarStyle: NavBarStyle.style6,
+              if (state is SignUpUserSuccess) {
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => const MainNavigationScreen(),
                   ),
-                ),
-              );
+                );
+              }
             } else if (state is UserAuthenticatingError) {
               showDialog(
                 context: context,

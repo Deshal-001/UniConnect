@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:uniconnect_app/core/constants/solid_colors.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import '../../../../core/router/app_router.dart';
+import '../../../../core/utils/l10n/arb/app_localizations.dart';
 import '../../../../core/widget/custom_button.dart';
 
 import '../../../../main.dart';

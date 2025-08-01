@@ -1,5 +1,8 @@
+import 'dart:math' as math;
+import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 
 import '../../../../core/widget/fav_icon.dart';
 import '../../domain/entity/event.dart';
@@ -31,104 +34,112 @@ class EventWidget extends StatelessWidget {
           if (result != null) onRefresh();
         });
       },
-      child: Card(
-        elevation: 0,
-        color: Colors.grey.shade100,
-        shape: RoundedRectangleBorder(
-          side: const BorderSide(
-            color: Colors.transparent,
-            width: 1.0,
-          ),
-          borderRadius: BorderRadius.circular(12),
-        ),
+      child: Container(
         margin: const EdgeInsets.symmetric(vertical: 8),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            const SizedBox(width: 5),
-            Center(
-              child: ClipRRect(
-                borderRadius: const BorderRadius.only(
-                  topLeft: Radius.circular(12),
-                  bottomLeft: Radius.circular(12),
-                  topRight: Radius.circular(12),
-                  bottomRight: Radius.circular(12),
-                ),
-                child: Image.asset(
-                  event.imgUrl ?? 'assets/images/img2.jpg',
-                  fit: BoxFit.cover,
-                  height: 90,
-                  width: 90,
-                ),
-              ),
-            ),
-            Expanded(
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      event.date != null
-                          ? DateFormat('EEE, MMM d · HH:mm a').format(event.date!)
-                          : 'No Date',
-                      style: const TextStyle(
-                        fontSize: 11,
-                        color: Colors.black,
-                        fontWeight: FontWeight.w300,
+        child: LiquidGlass(
+          shape: const LiquidRoundedSuperellipse(borderRadius: Radius.circular(12)),
+          settings: LiquidGlassSettings(
+             ambientStrength: 0.7,
+            lightAngle: 0.2 * math.pi,
+            glassColor: Colors.black38.withOpacity(0.08),
+            blur: 10,
+            thickness: 18,
+          ),
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(width: 5),
+                  Center(
+                    child: ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        bottomLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                        bottomRight: Radius.circular(12),
+                      ),
+                      child: Image.asset(
+                        event.imgUrl ?? 'assets/images/img2.jpg',
+                        fit: BoxFit.cover,
+                        height: 90,
+                        width: 90,
                       ),
                     ),
-                    const SizedBox(height: 8),
-                    Text(
-                      event.title ?? 'No Title',
-                      softWrap: true,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4.0),
-                      child: Row(
+                  ),
+                  Expanded(
+                    child: Padding(
+                      padding: const EdgeInsets.all(16.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Icon(Icons.location_on_outlined,
-                              size: 13, color: Colors.black54),
-                          const SizedBox(width: 4),
-                          Expanded(
-                            child: Text(
-                              event.location ?? 'No Location',
-                              softWrap: true,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 11,
-                                color: Colors.black,
-                                fontWeight: FontWeight.w300,
-                              ),
+                          Text(
+                            event.date != null
+                                ? DateFormat('EEE, MMM d · HH:mm a').format(event.date!)
+                                : 'No Date',
+                            style: const TextStyle(
+                              fontSize: 11,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w300,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            event.title ?? 'No Title',
+                            softWrap: true,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: const TextStyle(
+                              fontSize: 15,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.white,
+                            ),
+                          ),
+                          const SizedBox(height: 4),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4.0),
+                            child: Row(
+                              children: [
+                                const Icon(Icons.location_on_outlined,
+                                    size: 13, color: Colors.white70),
+                                const SizedBox(width: 4),
+                                Expanded(
+                                  child: Text(
+                                    event.location ?? 'No Location',
+                                    softWrap: true,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 11,
+                                      color: Colors.white70,
+                                      fontWeight: FontWeight.w300,
+                                    ),
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ],
                       ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  FavoriteIcon(),
-                  SizedBox(width: 12),
-                  Icon(Icons.share_outlined, size: 18, color: Colors.grey),
+                  ),
+                  const Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        FavoriteIcon(),
+                        SizedBox(width: 12),
+                        Icon(Icons.share_outlined, size: 18, color: Colors.white70),
+                      ],
+                    ),
+                  ),
                 ],
               ),
             ),
-          ],
+          ),
         ),
       ),
     );

@@ -80,33 +80,37 @@ class _EventListPageState extends State<EventListPage> with RouteAware {
                   if (events.isEmpty) {
                     return const Center(child: Text('No events found'));
                   }
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const TitleTextWidget(title: 'Event List'),
-                      Expanded(
-                        child: RefreshIndicator(
-                          onRefresh: () async {
-                            _refreshEvents();
-                            await Future.delayed(
-                                const Duration(milliseconds: 500));
-                          },
-                          child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: events.length,
-                            itemBuilder: (context, index) {
-                              final event = events[index];
-                              final refreshCallback = _refreshEvents;
-                              return index != 0
-                                  ? EventWidget(
-                                      event: event, onRefresh: refreshCallback)
-                                  : MainEventWidget(
-                                      event: event, onRefresh: refreshCallback);
+                  return Padding(
+                    padding: const EdgeInsets.only(bottom: 28.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const TitleTextWidget(title: 'Event List'),
+                        Expanded(
+                          child: RefreshIndicator(
+                            onRefresh: () async {
+                              _refreshEvents();
+                              await Future.delayed(
+                                  const Duration(milliseconds: 500));
                             },
+                            child: ListView.builder(
+                              padding: const EdgeInsets.symmetric(horizontal: 16),
+                              itemCount: events.length,
+                              itemBuilder: (context, index) {
+                                final event = events[index];
+                                final refreshCallback = _refreshEvents;
+                                return index != 0
+                                    ? EventWidget(
+                                        event: event, onRefresh: refreshCallback)
+                                    : MainEventWidget(
+                                        event: event, onRefresh: refreshCallback);
+                              },
+                            ),
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 58),
+                      ],
+                    ),
                   );
                 },
               );
